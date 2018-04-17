@@ -3,6 +3,11 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/loginItem"
+            android:icon="@drawable/ic_account"
+            android:title="Login" />
+
+        <item
             android:id="@+id/mainItem"
             android:icon="@drawable/ic_apple_icloud"
             android:title="Main" />
@@ -20,6 +25,10 @@
             android:icon="@drawable/ic_settings"
             android:title="Settings" />
 
+        <item
+            android:id="@+id/aboutItem"
+            android:icon="@drawable/ic_alert_circle"
+            android:title="About" />
 
     </group>
 </menu>
