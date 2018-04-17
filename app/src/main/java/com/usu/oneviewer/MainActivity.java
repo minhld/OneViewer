@@ -106,13 +106,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.item1) {
+        if (id == R.id.mainItem) {
 
-        } else if (id == R.id.item2) {
+        } else if (id == R.id.manageItem) {
+
+        } else if (id == R.id.settingsItem) {
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

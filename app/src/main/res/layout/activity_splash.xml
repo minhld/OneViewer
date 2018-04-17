@@ -13,12 +13,12 @@
         android:src="@drawable/ic_launcher"
         android:layout_centerInParent="true" />
 
-    <ProgressBar
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_below="@+id/simpleIcon"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Loading..."
         android:layout_centerInParent="true"
-        android:layout_marginTop="20dp"
-        />
+        android:layout_below="@+id/simpleIcon"
+        android:layout_marginTop="20dp"/>
 
 </RelativeLayout>

@@ -3,13 +3,23 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/item1"
-            android:icon="@drawable/ic_facebook"
-            android:title="Facebook" />
+            android:id="@+id/mainItem"
+            android:icon="@drawable/ic_apple_icloud"
+            android:title="Main" />
+
         <item
-            android:id="@+id/item2"
-            android:icon="@drawable/ic_twitter"
-            android:title="Twitter" />
+            android:id="@+id/manageItem"
+            android:icon="@drawable/ic_briefcase"
+            android:title="Management" />
+
     </group>
 
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/settingsItem"
+            android:icon="@drawable/ic_settings"
+            android:title="Settings" />
+
+
+    </group>
 </menu>
