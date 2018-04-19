@@ -36,9 +36,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         // getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.window_title);
 
-        mSwipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
-        mListView = (RecyclerView) findViewById(R.id.viewList);
-        mLoadingBar = (ProgressBar) findViewById(R.id.loadingBar);
+        mSwipeRefresh = findViewById(R.id.swipeRefresh);
+        mListView = findViewById(R.id.viewList);
+        mLoadingBar = findViewById(R.id.loadingBar);
 
     }
 

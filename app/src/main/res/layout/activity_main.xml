@@ -25,6 +25,7 @@
                 tools:layout_editor_absoluteX="8dp"
                 tools:layout_editor_absoluteY="8dp" />
             -->
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/viewList"
                 android:scrollbars="vertical"
