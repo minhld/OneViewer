@@ -14,4 +14,7 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="AppThemeCustomBar" parent="Theme.AppCompat.Light">
+    </style>
+
 </resources>

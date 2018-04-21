@@ -6,4 +6,8 @@
     <dimen name="nav_header_height">90dp</dimen>
     <dimen name="nav_header_height_large">100dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <!-- controls -->
+    <dimen name="action_title_size">18sp</dimen>
+    <dimen name="action_icon_size">28dp</dimen>
 </resources>

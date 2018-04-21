@@ -1,5 +1,6 @@
 package com.usu.oneviewer;
 
+import android.app.ActionBar;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -12,17 +13,18 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.usu.oneviewer.support.EventAdapter;
 import com.usu.oneviewer.support.RecyclerEventAdapter;
 import com.usu.utils.DbHelper;
 import com.usu.utils.Event;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends OneActivity {
     private SwipeRefreshLayout mSwipeRefresh;
     private RecyclerView mListView;
     private ProgressBar mLoadingBar;
@@ -32,15 +34,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
+
         setContentView(R.layout.activity_main);
-        // getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.window_title);
+
+        setTitle("Connections");
 
         mSwipeRefresh = findViewById(R.id.swipeRefresh);
         mListView = findViewById(R.id.viewList);
         mLoadingBar = findViewById(R.id.loadingBar);
 
     }
+
+    private void setTitle(String title) {
+        TextView titleText = findViewById(R.id.captionText);
+        titleText.setText(title);
+    }
+
 
     private void addEventHandlers() {
         // setup scroll-down refresh handler
@@ -105,20 +114,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.mainItem) {
-
-        } else if (id == R.id.manageItem) {
-
-        } else if (id == R.id.settingsItem) {
-
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 }

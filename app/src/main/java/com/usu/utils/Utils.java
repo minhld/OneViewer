@@ -5,7 +5,7 @@ package com.usu.utils;
  */
 
 public class Utils {
-    public final static int DELAY_TIME = 3000;
+    public final static int DELAY_TIME = 1000;
 
     public static void sleep(int delayTime) {
         try {
