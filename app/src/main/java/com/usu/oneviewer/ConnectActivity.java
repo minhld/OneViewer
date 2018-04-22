@@ -1,16 +1,10 @@
 package com.usu.oneviewer;
 
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -20,7 +14,7 @@ import com.usu.utils.Event;
 
 import java.util.List;
 
-public class ManageActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ConnectActivity extends OneActivity {
     private SwipeRefreshLayout mSwipeRefresh;
     private RecyclerView mListView;
     private ProgressBar mLoadingBar;
@@ -29,14 +23,20 @@ public class ManageActivity extends AppCompatActivity implements NavigationView.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // start up with layout and title
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
+        setTitle("Connections");
+        generateActions();
 
-        mSwipeRefresh = (SwipeRefreshLayout) findViewById(R.id.swipeRefresh);
-        mListView = (RecyclerView) findViewById(R.id.viewList);
-        mLoadingBar = (ProgressBar) findViewById(R.id.loadingBar);
+        // adding components
+        mSwipeRefresh = findViewById(R.id.swipeRefresh);
+        mListView = findViewById(R.id.viewList);
+        mLoadingBar = findViewById(R.id.loadingBar);
 
     }
+
+
 
     private void addEventHandlers() {
         // setup scroll-down refresh handler
@@ -49,9 +49,11 @@ public class ManageActivity extends AppCompatActivity implements NavigationView.
         });
 
         // configure the list
-        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2,
-                                                StaggeredGridLayoutManager.VERTICAL);
-        mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
+        StaggeredGridLayoutManager mLayoutManager =
+                            new StaggeredGridLayoutManager(2,
+                            StaggeredGridLayoutManager.VERTICAL);
+        mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.
+                            GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
         mListView.setHasFixedSize(true);
         mListView.setLayoutManager(mLayoutManager);
 
@@ -101,20 +103,4 @@ public class ManageActivity extends AppCompatActivity implements NavigationView.
         }
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-//        if (id == R.id.mainItem) {
-//
-//        } else if (id == R.id.manageItem) {
-//
-//        } else if (id == R.id.settingsItem) {
-//
-//        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
 }

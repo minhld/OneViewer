@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.usu.oneviewer.MainActivity"
+        <activity android:name="com.usu.oneviewer.ConnectActivity"
             android:theme="@style/AppThemeCustomBar">
 
         </activity>

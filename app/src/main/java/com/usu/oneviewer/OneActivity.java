@@ -10,15 +10,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class OneActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // customize the
+        // customize the actionbar
         getSupportActionBar().setCustomView(R.layout.one_actionbar);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
     }
@@ -41,16 +44,32 @@ public class OneActivity extends AppCompatActivity implements NavigationView.OnN
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-//        if (id == R.id.mainItem) {
-//
-//        } else if (id == R.id.manageItem) {
-//
-//        } else if (id == R.id.settingsItem) {
-//
-//        }
+        if (id == R.id.connectItem) {
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        } else if (id == R.id.browserItem) {
+
+        } else if (id == R.id.chatItem) {
+
+        }
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    protected void setTitle(String title) {
+        TextView titleText = findViewById(R.id.captionText);
+        titleText.setText(title);
+    }
+
+    protected void generateActions() {
+        drawer = findViewById(R.id.drawer_layout);
+
+        ImageView menuImage = findViewById(R.id.openMenuImage);
+        menuImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawer.openDrawer(GravityCompat.START);
+            }
+        });
     }
 }

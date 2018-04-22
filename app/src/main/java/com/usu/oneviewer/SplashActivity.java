@@ -35,7 +35,7 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(Object[] values) {
-            Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+            Intent intent = new Intent(SplashActivity.this, ConnectActivity.class);
             startActivity(intent);
 
             // close this activity
