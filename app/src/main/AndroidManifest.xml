@@ -23,9 +23,11 @@
         </activity>
 
         <activity android:name="com.usu.oneviewer.ConnectActivity"
-            android:theme="@style/AppThemeCustomBar">
+            android:theme="@style/AppThemeCustomBar" />
 
-        </activity>
+        <activity android:name="com.usu.oneviewer.BrowserActivity"
+            android:theme="@style/AppThemeCustomBar" />
+
     </application>
 
 </manifest>

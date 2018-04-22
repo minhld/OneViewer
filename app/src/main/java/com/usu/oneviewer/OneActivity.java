@@ -3,6 +3,7 @@ package com.usu.oneviewer;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,9 +15,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.usu.utils.Utils;
 
 public class OneActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawer;
+    boolean exitFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +30,7 @@ public class OneActivity extends AppCompatActivity implements NavigationView.OnN
         // customize the actionbar
         getSupportActionBar().setCustomView(R.layout.one_actionbar);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
     }
 
     @Override
@@ -47,13 +53,11 @@ public class OneActivity extends AppCompatActivity implements NavigationView.OnN
 
         if (id == R.id.connectItem) {
             if (!(this instanceof ConnectActivity)) {
-                Intent intent = new Intent(this, ConnectActivity.class);
-                startActivity(intent);
+                startActivity(ConnectActivity.class);
             }
         } else if (id == R.id.browserItem) {
             if (!(this instanceof BrowserActivity)) {
-                Intent intent = new Intent(this, BrowserActivity.class);
-                startActivity(intent);
+                startActivity(BrowserActivity.class);
             }
 
         } else if (id == R.id.chatItem) {
@@ -64,14 +68,37 @@ public class OneActivity extends AppCompatActivity implements NavigationView.OnN
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        if (exitFlag) {
+            finish(); // finish activity
+        } else {
+            Toast.makeText(this, "Press Back button again to exit.", Toast.LENGTH_SHORT).show();
+            exitFlag = true;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    exitFlag = false;
+                }
+            }, Utils.DELAY_BACK_PRESS);
+
+        }
+    }
+
     protected void setTitle(String title) {
         TextView titleText = findViewById(R.id.captionText);
         titleText.setText(title);
     }
 
     protected void generateActions() {
+        // set up the navigation bar
+        // add the left side menu to the onclick handlers
         drawer = findViewById(R.id.drawer_layout);
 
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        // setup the handlers for action bar's buttons
         ImageView menuImage = findViewById(R.id.openMenuImage);
         menuImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,5 +106,11 @@ public class OneActivity extends AppCompatActivity implements NavigationView.OnN
                 drawer.openDrawer(GravityCompat.START);
             }
         });
+    }
+
+    private void startActivity(Class<?> actClass) {
+        Intent intent = new Intent(this, actClass);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }
