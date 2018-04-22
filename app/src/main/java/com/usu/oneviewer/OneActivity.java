@@ -32,8 +32,6 @@ public class OneActivity extends AppCompatActivity implements NavigationView.OnN
         // customize the actionbar
         getSupportActionBar().setCustomView(R.layout.one_actionbar);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-
-        ButterKnife.bind(this);
     }
 
     @Override
@@ -95,6 +93,8 @@ public class OneActivity extends AppCompatActivity implements NavigationView.OnN
     }
 
     protected void generateActions() {
+        ButterKnife.bind(this);
+
         // set up the navigation bar
         // add the left side menu to the onclick handlers
         drawer = findViewById(R.id.drawer_layout);

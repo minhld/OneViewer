@@ -1,30 +1,68 @@
 package com.usu.oneviewer;
 
+import android.net.wifi.WifiInfo;
+import android.net.wifi.p2p.WifiP2pInfo;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.usu.connection.utils.DevUtils;
 import com.usu.connection.wfd.WFDSupporter;
 import com.usu.connection.wifi.WiFiSupporter;
-import com.usu.oneviewer.support.RecyclerEventAdapter;
-import com.usu.utils.DbHelper;
-import com.usu.utils.Event;
+import com.usu.tinyservice.network.NetUtils;
 
-import java.util.List;
+import butterknife.BindView;
 
 public class ConnectActivity extends OneActivity {
-    private SwipeRefreshLayout mSwipeRefresh;
-    private RecyclerView mListView;
-    private ProgressBar mLoadingBar;
+    @BindView(R.id.swipeRefresh)
+    SwipeRefreshLayout mSwipeRefresh;
 
-    private RecyclerEventAdapter mEventAdapter;
+    @BindView(R.id.wfdList)
+    ListView mDeviceList;
+
+    @BindView(R.id.loadingBar)
+    ProgressBar mLoadingBar;
 
     WFDSupporter wfdSupporter;
     WiFiSupporter wfSupport;
+
+    Handler mainUiHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case DevUtils.MESSAGE_GO_CONNECTED: {
+                    WifiP2pInfo p2pInfo = (WifiP2pInfo) msg.obj;
+//                    brokerIp = p2pInfo.groupOwnerAddress.getHostAddress();
+//                    UITools.printLog(MainActivity.this, infoText, "Server " + brokerIp);
+                    break;
+                }
+                case DevUtils.MESSAGE_CLIENT_CONNECTED: {
+                    WifiP2pInfo p2pInfo = (WifiP2pInfo) msg.obj;
+                    // initWorker(p2pInfo.groupOwnerAddress.getHostAddress());
+//                    brokerIp = p2pInfo.groupOwnerAddress.getHostAddress();
+//                    UITools.printLog(MainActivity.this, infoText, brokerIp);
+                    break;
+                }
+                case DevUtils.MESSAGE_WIFI_DETECTED: {
+                    WifiInfo wifiInfo = (WifiInfo) msg.obj;
+//                    wifiBrokerIp = DevUtils.getIPString(wifiInfo.getIpAddress());
+//                    ipText.setText(wifiBrokerIp);
+                    break;
+                }
+                case DevUtils.MESSAGE_INFO: {
+//                    UITools.printLog(MainActivity.this, infoText, msg.obj);
+                    // DevUtils.printLog(MainActivity.this, infoText, msg.obj);
+                    break;
+                }
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,54 +72,73 @@ public class ConnectActivity extends OneActivity {
         setTitle("Connections");
         generateActions();
 
-        // adding components
-        mSwipeRefresh = findViewById(R.id.swipeRefresh);
-        mListView = findViewById(R.id.viewList);
-        mLoadingBar = findViewById(R.id.loadingBar);
+        setupNetwork();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        wfdSupporter.runOnPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        wfdSupporter.runOnResume();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
     }
 
     private void setupNetwork() {
-        wfSupport = new WiFiSupporter(this);
-        // wifiList.setAdapter(wfSupport.getWifiListAdapter());
-    }
+        wfdSupporter = new WFDSupporter(this);
+        mDeviceList.setAdapter(wfdSupporter.getDeviceListAdapter());
 
+        // set up the main handler
+        NetUtils.setMainHandler(mainUiHandler);
 
+        // start looking for the peers
+        wfdSupporter.discoverPeers();
 
-    private void addEventHandlers() {
-        // setup scroll-down refresh handler
         mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 // reload the list
-                new LoadList().execute();
+                new LoadWFDList().execute();
             }
         });
 
-        // configure the list
-        StaggeredGridLayoutManager mLayoutManager =
-                            new StaggeredGridLayoutManager(2,
-                            StaggeredGridLayoutManager.VERTICAL);
-        mLayoutManager.setGapStrategy(StaggeredGridLayoutManager.
-                            GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
-        mListView.setHasFixedSize(true);
-        mListView.setLayoutManager(mLayoutManager);
 
-        // event list view
+        // wfSupport = new WiFiSupporter(this);
+        // mWifiList.setAdapter(wfSupport.getWifiListAdapter());
+    }
+
+
+
+//    private void addEventHandlers() {
+//        // setup scroll-down refresh handler
+//        mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                // reload the list
+//                new LoadList().execute();
+//            }
+//        });
+//
+//        // event list view
 //        mEventAdapter = new EventAdapter(this);
 //        mListView.setAdapter(mEventAdapter);
-        mEventAdapter = new RecyclerEventAdapter(this);
-        mListView.setAdapter(mEventAdapter);
-
-        // reload data
-        new LoadList().execute();
-    }
+//        mEventAdapter = new RecyclerEventAdapter(this);
+//        mWifiList.setAdapter(mEventAdapter);
+//
+//    }
 
     /**
      * loading class
      */
-    class LoadList extends AsyncTask {
-        List<Event> events;
+    class LoadWFDList extends AsyncTask {
 
         @Override
         protected void onPreExecute() {
@@ -91,7 +148,7 @@ public class ConnectActivity extends OneActivity {
 
         @Override
         protected Object doInBackground(Object[] objects) {
-            events = DbHelper.getEvents(20);
+
             publishProgress();
             return null;
         }
@@ -105,11 +162,12 @@ public class ConnectActivity extends OneActivity {
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
             mLoadingBar.setVisibility(View.INVISIBLE);
+
 //            mEventAdapter.clear();
 //            mEventAdapter.addAll(events);
-            mEventAdapter.updateEventList(events);
-            mEventAdapter.notifyDataSetChanged();
-            mSwipeRefresh.setRefreshing(false);
+//            mEventAdapter.updateEventList(events);
+//            mEventAdapter.notifyDataSetChanged();
+//            mSwipeRefresh.setRefreshing(false);
         }
     }
 
