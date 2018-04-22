@@ -1,6 +1,7 @@
 package com.usu.oneviewer;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -45,8 +46,15 @@ public class OneActivity extends AppCompatActivity implements NavigationView.OnN
         int id = item.getItemId();
 
         if (id == R.id.connectItem) {
-
+            if (!(this instanceof ConnectActivity)) {
+                Intent intent = new Intent(this, ConnectActivity.class);
+                startActivity(intent);
+            }
         } else if (id == R.id.browserItem) {
+            if (!(this instanceof BrowserActivity)) {
+                Intent intent = new Intent(this, BrowserActivity.class);
+                startActivity(intent);
+            }
 
         } else if (id == R.id.chatItem) {
 
