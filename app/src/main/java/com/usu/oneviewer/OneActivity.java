@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.usu.utils.Utils;
 
+import butterknife.ButterKnife;
+
 public class OneActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawer;
     boolean exitFlag = false;
@@ -31,6 +33,7 @@ public class OneActivity extends AppCompatActivity implements NavigationView.OnN
         getSupportActionBar().setCustomView(R.layout.one_actionbar);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
 
+        ButterKnife.bind(this);
     }
 
     @Override
@@ -59,9 +62,10 @@ public class OneActivity extends AppCompatActivity implements NavigationView.OnN
             if (!(this instanceof BrowserActivity)) {
                 startActivity(BrowserActivity.class);
             }
-
         } else if (id == R.id.chatItem) {
-
+            if (!(this instanceof ChatActivity)) {
+                startActivity(ChatActivity.class);
+            }
         }
 
         drawer.closeDrawer(GravityCompat.START);

@@ -28,6 +28,8 @@
         <activity android:name="com.usu.oneviewer.BrowserActivity"
             android:theme="@style/AppThemeCustomBar" />
 
+        <activity android:name="com.usu.oneviewer.ChatActivity"
+            android:theme="@style/AppThemeCustomBar" />
     </application>
 
 </manifest>

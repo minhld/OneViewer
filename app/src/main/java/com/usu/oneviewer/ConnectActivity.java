@@ -8,6 +8,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.usu.connection.wfd.WFDSupporter;
+import com.usu.connection.wifi.WiFiSupporter;
 import com.usu.oneviewer.support.RecyclerEventAdapter;
 import com.usu.utils.DbHelper;
 import com.usu.utils.Event;
@@ -20,6 +22,9 @@ public class ConnectActivity extends OneActivity {
     private ProgressBar mLoadingBar;
 
     private RecyclerEventAdapter mEventAdapter;
+
+    WFDSupporter wfdSupporter;
+    WiFiSupporter wfSupport;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,11 @@ public class ConnectActivity extends OneActivity {
         mListView = findViewById(R.id.viewList);
         mLoadingBar = findViewById(R.id.loadingBar);
 
+    }
+
+    private void setupNetwork() {
+        wfSupport = new WiFiSupporter(this);
+        // wifiList.setAdapter(wfSupport.getWifiListAdapter());
     }
 
 
