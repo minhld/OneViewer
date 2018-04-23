@@ -8,32 +8,66 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
+
     <RelativeLayout
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefresh"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="50dp">
+            android:layout_marginTop="50dp"
+            android:orientation="vertical">
 
-            <ListView
-                android:id="@+id/wfdList"
-                android:scrollbars="vertical"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="0dp"
+                android:layout_weight="2">
 
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeWfdRefresh"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                    <ListView
+                        android:id="@+id/wfdList"
+                        android:scrollbars="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/list_wfd_background"/>
+                </android.support.v4.widget.SwipeRefreshLayout>
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeWifiRefresh"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+                    <ListView
+                        android:id="@+id/wifiList"
+                        android:scrollbars="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/list_wifi_background"/>
+                </android.support.v4.widget.SwipeRefreshLayout>
 
-        <ProgressBar
-            android:id="@+id/loadingBar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerInParent="true"
-            android:visibility="invisible"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/infoText"
+                    android:textSize="@dimen/text_info_size"
+                    android:background="@android:color/white"
+                    android:padding="3dp"/>
+
+            </LinearLayout>
+        </LinearLayout>
 
     </RelativeLayout>
 

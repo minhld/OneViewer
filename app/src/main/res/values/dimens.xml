@@ -10,4 +10,7 @@
     <!-- controls -->
     <dimen name="action_title_size">18sp</dimen>
     <dimen name="action_icon_size">28dp</dimen>
+
+    <!-- connect activity -->
+    <dimen name="text_info_size">10dp</dimen>
 </resources>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="row_height">38sp</dimen>
-    <dimen name="row_image_size">32sp</dimen>
-    <dimen name="row_title_size">12sp</dimen>
-    <dimen name="row_status_size">12dp</dimen>
+    <dimen name="row_padding">6sp</dimen>
+    <dimen name="row_image_size">28sp</dimen>
+    <dimen name="row_title_size">11sp</dimen>
+    <dimen name="row_status_size">11dp</dimen>
 </resources>

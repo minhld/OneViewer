@@ -34,7 +34,7 @@ public class WFDSupporter {
                 deviceListAdapter.addAll(deviceList);
                 deviceListAdapter.notifyDataSetChanged();
 
-                NetUtils.raiseEvent(DevUtils.MESSAGE_LIST_UPDATED, null);
+                NetUtils.raiseEvent(DevUtils.MESSAGE_WFDLIST_UPDATED, null);
             }
 
             @Override

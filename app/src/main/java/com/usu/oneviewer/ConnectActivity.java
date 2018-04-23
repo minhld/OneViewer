@@ -8,31 +8,43 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.usu.connection.utils.DevUtils;
 import com.usu.connection.wfd.WFDSupporter;
 import com.usu.connection.wifi.WiFiSupporter;
 import com.usu.tinyservice.network.NetUtils;
+import com.usu.utils.Utils;
 
 import butterknife.BindView;
 
 public class ConnectActivity extends OneActivity {
-    @BindView(R.id.swipeRefresh)
-    SwipeRefreshLayout mSwipeRefresh;
+    @BindView(R.id.swipeWfdRefresh)
+    SwipeRefreshLayout mSwipeWfdRefresh;
+
+    @BindView(R.id.swipeWifiRefresh)
+    SwipeRefreshLayout mSwipeWifiRefresh;
 
     @BindView(R.id.wfdList)
-    ListView mDeviceList;
+    ListView mWfdList;
 
-    @BindView(R.id.loadingBar)
-    ProgressBar mLoadingBar;
+    @BindView(R.id.wifiList)
+    ListView mWifiList;
+
+    @BindView(R.id.infoText)
+    TextView mInfoText;
 
     WFDSupporter wfdSupporter;
     WiFiSupporter wfSupport;
+
+    String brokerIp;
+    String wifiBrokerIp;
 
     Handler mainUiHandler = new Handler() {
         @Override
@@ -40,31 +52,35 @@ public class ConnectActivity extends OneActivity {
             switch (msg.what) {
                 case DevUtils.MESSAGE_GO_CONNECTED: {
                     WifiP2pInfo p2pInfo = (WifiP2pInfo) msg.obj;
-//                    brokerIp = p2pInfo.groupOwnerAddress.getHostAddress();
-//                    UITools.printLog(MainActivity.this, infoText, "Server " + brokerIp);
+                    brokerIp = p2pInfo.groupOwnerAddress.getHostAddress();
+                    Utils.printLog(ConnectActivity.this, mInfoText, "Server: " + brokerIp + "\r\n");
                     break;
                 }
                 case DevUtils.MESSAGE_CLIENT_CONNECTED: {
                     WifiP2pInfo p2pInfo = (WifiP2pInfo) msg.obj;
                     // initWorker(p2pInfo.groupOwnerAddress.getHostAddress());
-//                    brokerIp = p2pInfo.groupOwnerAddress.getHostAddress();
-//                    UITools.printLog(MainActivity.this, infoText, brokerIp);
+                    brokerIp = p2pInfo.groupOwnerAddress.getHostAddress();
+                    Utils.printLog(ConnectActivity.this, mInfoText, "Client: " + brokerIp + "\r\n");
                     break;
                 }
                 case DevUtils.MESSAGE_WIFI_DETECTED: {
                     WifiInfo wifiInfo = (WifiInfo) msg.obj;
-//                    wifiBrokerIp = DevUtils.getIPString(wifiInfo.getIpAddress());
-//                    ipText.setText(wifiBrokerIp);
+                    wifiBrokerIp = DevUtils.getIPString(wifiInfo.getIpAddress());
+                    // ipText.setText(wifiBrokerIp);
                     break;
                 }
-                case DevUtils.MESSAGE_LIST_UPDATED: {
+                case DevUtils.MESSAGE_WFDLIST_UPDATED: {
                     // when the list of device is updated
-                    mSwipeRefresh.setRefreshing(false);
+                    mSwipeWfdRefresh.setRefreshing(false);
+                    break;
+                }
+                case DevUtils.MESSAGE_WIFILIST_UPDATED: {
+                    // when the list of device is updated
+                    mSwipeWifiRefresh.setRefreshing(false);
                     break;
                 }
                 case DevUtils.MESSAGE_INFO: {
-//                    UITools.printLog(MainActivity.this, infoText, msg.obj);
-                    // DevUtils.printLog(MainActivity.this, infoText, msg.obj);
+                    Utils.printLog(ConnectActivity.this, mInfoText, msg.obj);
                     break;
                 }
             }
@@ -79,7 +95,7 @@ public class ConnectActivity extends OneActivity {
         setTitle("Connections");
         generateActions();
 
-        setupNetwork();
+        setupControls();
     }
 
     @Override
@@ -106,27 +122,32 @@ public class ConnectActivity extends OneActivity {
 
     }
 
-    private void setupNetwork() {
+    private void setupControls() {
         wfdSupporter = new WFDSupporter(this);
-        mDeviceList.setAdapter(wfdSupporter.getDeviceListAdapter());
+        mWfdList.setAdapter(wfdSupporter.getDeviceListAdapter());
 
         // set up the main handler
         NetUtils.setMainHandler(mainUiHandler);
 
         // start looking for the peers
-        wfdSupporter.discoverPeers();
+        discoverWfdPeers();
 
-        mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mSwipeWfdRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 // reload the list
-                wfdSupporter.discoverPeers();
-                // new LoadWFDList().execute();
+                discoverWfdPeers();
             }
         });
 
         // wfSupport = new WiFiSupporter(this);
         // mWifiList.setAdapter(wfSupport.getWifiListAdapter());
+
+        mInfoText.setMovementMethod(new ScrollingMovementMethod());
     }
 
+    private void discoverWfdPeers() {
+        wfdSupporter.discoverPeers();
+        Utils.toast(this, "Start discovering peers...");
+    }
 }

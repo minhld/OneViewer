@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.usu.utils.Utils;
 
@@ -75,7 +74,7 @@ public class OneActivity extends AppCompatActivity implements NavigationView.OnN
         if (exitFlag) {
             finish(); // finish activity
         } else {
-            Toast.makeText(this, "Press Back button again to exit.", Toast.LENGTH_SHORT).show();
+            Utils.toast(this, "Press Back button again to exit.");
             exitFlag = true;
             new Handler().postDelayed(new Runnable() {
                 @Override
