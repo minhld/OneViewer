@@ -15,6 +15,7 @@
     </style>
 
     <style name="AppThemeCustomBar" parent="Theme.AppCompat.Light">
+        <item name="actionBarSize">50dp</item>
     </style>
 
 </resources>

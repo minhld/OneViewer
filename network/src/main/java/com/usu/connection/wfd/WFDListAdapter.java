@@ -45,8 +45,8 @@ public class WFDListAdapter extends ArrayAdapter<WifiP2pDevice> {
         }
         WifiP2pDevice device = this.getItem(position);
         if (device != null) {
-            TextView top = (TextView) v.findViewById(R.id.device_name);
-            TextView bottom = (TextView) v.findViewById(R.id.device_details);
+            TextView top = v.findViewById(R.id.device_name);
+            TextView bottom = v.findViewById(R.id.device_details);
             if (top != null) {
                 top.setText(device.deviceName);
             }

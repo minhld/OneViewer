@@ -8,6 +8,8 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -55,6 +57,11 @@ public class ConnectActivity extends OneActivity {
 //                    ipText.setText(wifiBrokerIp);
                     break;
                 }
+                case DevUtils.MESSAGE_LIST_UPDATED: {
+                    // when the list of device is updated
+                    mSwipeRefresh.setRefreshing(false);
+                    break;
+                }
                 case DevUtils.MESSAGE_INFO: {
 //                    UITools.printLog(MainActivity.this, infoText, msg.obj);
                     // DevUtils.printLog(MainActivity.this, infoText, msg.obj);
@@ -88,6 +95,13 @@ public class ConnectActivity extends OneActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.connect_toolbar, menu);
+        return true;
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
     }
@@ -106,69 +120,13 @@ public class ConnectActivity extends OneActivity {
             @Override
             public void onRefresh() {
                 // reload the list
-                new LoadWFDList().execute();
+                wfdSupporter.discoverPeers();
+                // new LoadWFDList().execute();
             }
         });
 
-
         // wfSupport = new WiFiSupporter(this);
         // mWifiList.setAdapter(wfSupport.getWifiListAdapter());
-    }
-
-
-
-//    private void addEventHandlers() {
-//        // setup scroll-down refresh handler
-//        mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                // reload the list
-//                new LoadList().execute();
-//            }
-//        });
-//
-//        // event list view
-//        mEventAdapter = new EventAdapter(this);
-//        mListView.setAdapter(mEventAdapter);
-//        mEventAdapter = new RecyclerEventAdapter(this);
-//        mWifiList.setAdapter(mEventAdapter);
-//
-//    }
-
-    /**
-     * loading class
-     */
-    class LoadWFDList extends AsyncTask {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mLoadingBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected Object doInBackground(Object[] objects) {
-
-            publishProgress();
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(Object[] values) {
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected void onPostExecute(Object o) {
-            super.onPostExecute(o);
-            mLoadingBar.setVisibility(View.INVISIBLE);
-
-//            mEventAdapter.clear();
-//            mEventAdapter.addAll(events);
-//            mEventAdapter.updateEventList(events);
-//            mEventAdapter.notifyDataSetChanged();
-//            mSwipeRefresh.setRefreshing(false);
-        }
     }
 
 }

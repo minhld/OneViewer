@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="grayIconColor">#666</color>
+    <color name="row_title_color">#666</color>
+    <color name="row_status_color">#aaa</color>
+</resources>

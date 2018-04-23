@@ -2,15 +2,15 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_height="@dimen/row_height"
     android:background="?android:attr/activatedBackgroundIndicator"
-    android:padding="6dip">
+    android:padding="10dp">
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
+        android:layout_width="@dimen/row_image_size"
+        android:layout_height="@dimen/row_image_size"
         android:layout_marginRight="2dip"
-        android:src="@drawable/machine" />
+        android:src="@drawable/ic_cellphone_color" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -23,15 +23,16 @@
             android:layout_width="fill_parent"
             android:layout_height="0dip"
             android:layout_weight="1"
-            android:textSize="11sp"
-            android:gravity="center_vertical" />
+            android:textSize="@dimen/row_title_size"
+            android:gravity="center_vertical"
+            android:textColor="@color/row_title_color"/>
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="0dip"
             android:layout_weight="1"
-            android:textSize="10sp"
-            android:textColor="#ccc"
+            android:textSize="@dimen/row_status_size"
+            android:textColor="@color/row_status_color"
             android:id="@+id/device_details"
             android:singleLine="true"
             android:ellipsize="marquee" />

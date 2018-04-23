@@ -33,6 +33,8 @@ public class WFDSupporter {
                 deviceListAdapter.clear();
                 deviceListAdapter.addAll(deviceList);
                 deviceListAdapter.notifyDataSetChanged();
+
+                NetUtils.raiseEvent(DevUtils.MESSAGE_LIST_UPDATED, null);
             }
 
             @Override
