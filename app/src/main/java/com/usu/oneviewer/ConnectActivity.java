@@ -1,8 +1,8 @@
 package com.usu.oneviewer;
 
+import android.content.pm.PackageManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.p2p.WifiP2pInfo;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
@@ -11,13 +11,13 @@ import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.usu.connection.utils.DevUtils;
 import com.usu.connection.wfd.WFDSupporter;
+import com.usu.connection.wifi.WiFiManager;
 import com.usu.connection.wifi.WiFiSupporter;
 import com.usu.tinyservice.network.NetUtils;
 import com.usu.utils.Utils;
@@ -41,7 +41,7 @@ public class ConnectActivity extends OneActivity {
     TextView mInfoText;
 
     WFDSupporter wfdSupporter;
-    WiFiSupporter wfSupport;
+    WiFiSupporter wifiSupporter;
 
     String brokerIp;
     String wifiBrokerIp;
@@ -102,12 +102,14 @@ public class ConnectActivity extends OneActivity {
     protected void onPause() {
         super.onPause();
         wfdSupporter.runOnPause();
+        wifiSupporter.runOnPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         wfdSupporter.runOnResume();
+        wifiSupporter.runOnResume();
     }
 
     @Override
@@ -118,20 +120,41 @@ public class ConnectActivity extends OneActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.refreshItem: {
+                discoverWfdPeers();
+                break;
+            }
+            case R.id.settingsItem: {
 
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == WiFiManager.WIFI_REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // search for Wifi network list
+            wifiSupporter.getWifiConnections();
+        }
     }
 
     private void setupControls() {
+        // ------ Main Handler ------
+        NetUtils.setMainHandler(mainUiHandler);
+        mInfoText.setMovementMethod(new ScrollingMovementMethod());
+
+        // ------ WIFI DIRECT ------
+        // setup the wifi-direct list and its supporter
         wfdSupporter = new WFDSupporter(this);
         mWfdList.setAdapter(wfdSupporter.getDeviceListAdapter());
-
-        // set up the main handler
-        NetUtils.setMainHandler(mainUiHandler);
 
         // start looking for the peers
         discoverWfdPeers();
 
+        // setup swipe component - drag down and release to REFRESH
         mSwipeWfdRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -140,14 +163,31 @@ public class ConnectActivity extends OneActivity {
             }
         });
 
-        // wfSupport = new WiFiSupporter(this);
-        // mWifiList.setAdapter(wfSupport.getWifiListAdapter());
+        // ------ ORIGINAL WIFI ------
+        // setup the wifi list and its supporter
+        wifiSupporter = new WiFiSupporter(this);
+        mWifiList.setAdapter(wifiSupporter.getWifiListAdapter());
 
-        mInfoText.setMovementMethod(new ScrollingMovementMethod());
+        // start looking for the peers
+        discoverWifiNetworks();
+
+        // set up swipe
+        mSwipeWifiRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // reload the WiFi list
+                discoverWifiNetworks();
+            }
+        });
     }
 
     private void discoverWfdPeers() {
         wfdSupporter.discoverPeers();
         Utils.toast(this, "Start discovering peers...");
+    }
+
+    private void discoverWifiNetworks() {
+        wifiSupporter.prepRetrieveWifiConnections(this);
+        // Utils.toast(this, "Start discovering WiFi networks...");
     }
 }

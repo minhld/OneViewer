@@ -35,7 +35,7 @@
                         android:scrollbars="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/list_wfd_background"/>
+                        android:background="@drawable/border"/>
                 </android.support.v4.widget.SwipeRefreshLayout>
 
                 <android.support.v4.widget.SwipeRefreshLayout
@@ -48,7 +48,7 @@
                         android:scrollbars="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@color/list_wifi_background"/>
+                        android:background="@drawable/border"/>
                 </android.support.v4.widget.SwipeRefreshLayout>
 
             </LinearLayout>

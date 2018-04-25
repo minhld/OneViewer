@@ -2,6 +2,7 @@ package com.usu.connection.wifi;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.net.DhcpInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiInfo;
@@ -23,23 +24,28 @@ public class WiFiSupporter {
     Activity context;
     WiFiManager wiFiManager;
     WiFiListAdapter wifiListAdapter;
+    IntentFilter mIntentFilter;
 
     public WiFiSupporter(Activity context) {
         this.context = context;
 
         wiFiManager = new WiFiManager(context);
-        wiFiManager.setmWifiScanListener(new WiFiManager.WiFiScanListener() {
+        wiFiManager.setWifiScanListener(new WiFiManager.WiFiScanListener() {
             @Override
             public void listReceived(List<ScanResult> mScanResults) {
                 wifiListAdapter.clear();
                 wifiListAdapter.addAll(mScanResults);
                 wifiListAdapter.notifyDataSetChanged();
+
+                // update to the main UI thread
+                NetUtils.raiseEvent(DevUtils.MESSAGE_WIFILIST_UPDATED, null);
             }
         });
-
         // WiFi network list
         wifiListAdapter = new WiFiListAdapter(context, R.layout.row_wifi, wiFiManager);
 
+        mIntentFilter = wiFiManager.getSingleIntentFilter();
+        this.context.registerReceiver(wiFiManager, mIntentFilter);
     }
 
     /**
@@ -67,11 +73,13 @@ public class WiFiSupporter {
     }
 
     /**
-     * request permission for an activity
+     * prepare to get the wifi list by
+     *  - (1) request permission for an activity
+     *  - (2) once permission granted, request for wifi list
      * @param c
      */
-    public void requestPermission(Activity c) {
-        wiFiManager.requestPermission(c);
+    public void prepRetrieveWifiConnections(Activity c) {
+        wiFiManager.prepRetrieveWifiConnections(c);
     }
 
     /**
@@ -81,4 +89,15 @@ public class WiFiSupporter {
         wiFiManager.getWifiConnections();
     }
 
+    public void runOnPause() {
+        if (wiFiManager != null && mIntentFilter != null) {
+            this.context.unregisterReceiver(wiFiManager);
+        }
+    }
+
+    public void runOnResume() {
+        if (wiFiManager != null && mIntentFilter != null) {
+            this.context.registerReceiver(wiFiManager, mIntentFilter);
+        }
+    }
 }
