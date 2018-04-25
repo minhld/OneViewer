@@ -100,7 +100,7 @@ public class DevUtils {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
         alertDialogBuilder.setView(promptView);
 
-        final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+        final EditText editText = promptView.findViewById(R.id.edittext);
         if (defs.length > 0) editText.setText(defs[0]);
 
         // setup a dialog window

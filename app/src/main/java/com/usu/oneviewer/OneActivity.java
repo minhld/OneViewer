@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.usu.utils.Utils;
+import com.usu.oneviewer.utils.Utils;
 
 import butterknife.ButterKnife;
 

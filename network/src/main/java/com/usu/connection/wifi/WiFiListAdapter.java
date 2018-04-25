@@ -51,7 +51,7 @@ public class WiFiListAdapter extends ArrayAdapter<ScanResult> {
                 top.setText(result.SSID);
             }
             if (bottom != null) {
-                bottom.setText(result.capabilities);
+                bottom.setText(getSecurityString(result.capabilities));
             }
         }
         v.setOnClickListener(new DeviceClickListener(result));
@@ -79,6 +79,21 @@ public class WiFiListAdapter extends ArrayAdapter<ScanResult> {
                 }
             }, WiFiManager.PASSWORD);
 
+        }
+    }
+
+    /**
+     * purify the capacities to get the first element
+     *
+     * @param cap
+     * @return
+     */
+    private String getSecurityString(String cap) {
+        try {
+            return cap.substring(1, cap.indexOf("]"));
+        } catch(Exception e) {
+            // when string went wrong for an unknown reason
+            return "";
         }
     }
 }

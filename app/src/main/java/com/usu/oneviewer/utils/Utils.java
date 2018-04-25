@@ -1,4 +1,4 @@
-package com.usu.utils;
+package com.usu.oneviewer.utils;
 
 import android.app.Activity;
 import android.content.Context;

@@ -20,7 +20,7 @@ import com.usu.connection.wfd.WFDSupporter;
 import com.usu.connection.wifi.WiFiManager;
 import com.usu.connection.wifi.WiFiSupporter;
 import com.usu.tinyservice.network.NetUtils;
-import com.usu.utils.Utils;
+import com.usu.oneviewer.utils.Utils;
 
 
 import butterknife.BindView;
@@ -104,14 +104,14 @@ public class ConnectActivity extends OneActivity {
     protected void onPause() {
         super.onPause();
         wfdSupporter.runOnPause();
-        // wifiSupporter.runOnPause();
+        wifiSupporter.runOnPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         wfdSupporter.runOnResume();
-        // wifiSupporter.runOnResume();
+        wifiSupporter.runOnResume();
     }
 
     @Override
@@ -125,19 +125,24 @@ public class ConnectActivity extends OneActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.refreshItem: {
+                // refresh both wifi and wifi-direct list
                 discoverWfdPeers();
+                discoverWifiNetworks();
                 break;
             }
             case R.id.settingsItem: {
-
+                // requesting group information
+                wfdSupporter.requestGroupInfo();
             }
         }
         return false;
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == WiFiManager.WIFI_REQUEST_CODE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == WiFiManager.WIFI_REQUEST_CODE &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             // search for Wifi network list
             wifiSupporter.getWifiConnections();
         }

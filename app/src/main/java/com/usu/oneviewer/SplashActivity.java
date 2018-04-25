@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.usu.utils.Utils;
+import com.usu.oneviewer.utils.Utils;
 
 public class SplashActivity extends AppCompatActivity {
 
