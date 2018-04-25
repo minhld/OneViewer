@@ -45,8 +45,8 @@ public class WiFiListAdapter extends ArrayAdapter<ScanResult> {
         }
         ScanResult result = this.getItem(position);
         if (result != null) {
-            TextView top = (TextView) v.findViewById(R.id.device_name);
-            TextView bottom = (TextView) v.findViewById(R.id.device_details);
+            TextView top = v.findViewById(R.id.device_name);
+            TextView bottom = v.findViewById(R.id.device_details);
             if (top != null) {
                 top.setText(result.SSID);
             }

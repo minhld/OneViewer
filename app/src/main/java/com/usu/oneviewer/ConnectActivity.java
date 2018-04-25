@@ -22,6 +22,7 @@ import com.usu.connection.wifi.WiFiSupporter;
 import com.usu.tinyservice.network.NetUtils;
 import com.usu.utils.Utils;
 
+
 import butterknife.BindView;
 
 public class ConnectActivity extends OneActivity {
@@ -95,6 +96,7 @@ public class ConnectActivity extends OneActivity {
         setTitle("Connections");
         generateActions();
 
+        // get controls ready for use
         setupControls();
     }
 
@@ -102,14 +104,14 @@ public class ConnectActivity extends OneActivity {
     protected void onPause() {
         super.onPause();
         wfdSupporter.runOnPause();
-        wifiSupporter.runOnPause();
+        // wifiSupporter.runOnPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         wfdSupporter.runOnResume();
-        wifiSupporter.runOnResume();
+        // wifiSupporter.runOnResume();
     }
 
     @Override

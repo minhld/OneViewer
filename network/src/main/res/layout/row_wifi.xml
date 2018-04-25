@@ -2,15 +2,16 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:layout_height="@dimen/row_height"
     android:background="?android:attr/activatedBackgroundIndicator"
-    android:padding="6dip">
+    android:padding="@dimen/row_padding">
+
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="@dimen/row_image_size"
+        android:layout_height="@dimen/row_image_size"
         android:layout_marginRight="2dip"
-        android:src="@drawable/wifi" />
+        android:src="@drawable/wifi_big" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -23,14 +24,14 @@
             android:layout_width="fill_parent"
             android:layout_height="0dip"
             android:layout_weight="1"
-            android:textSize="11sp"
+            android:textSize="@dimen/row_title_size"
             android:gravity="center_vertical" />
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="0dip"
             android:layout_weight="1"
-            android:textSize="10sp"
+            android:textSize="@dimen/row_title_size"
             android:textColor="#ccc"
             android:id="@+id/device_details"
             android:singleLine="true"

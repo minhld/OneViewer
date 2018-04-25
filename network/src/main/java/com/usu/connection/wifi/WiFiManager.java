@@ -11,9 +11,8 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
-import android.net.wifi.p2p.WifiP2pManager;
+import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
 
 import com.usu.connection.utils.DevUtils;
 import com.usu.tinyservice.network.NetUtils;
@@ -186,4 +185,45 @@ public class WiFiManager extends BroadcastReceiver {
         NetUtils.print(msg);
     }
 
+    /**
+     * demonstrate the way to scan the wifi list
+     * to enable wifi scanner, "Location" must be enabled
+     *
+     * @param c
+     */
+    public void getSimpleWifiList(Activity c) {
+        final WifiManager mWifiManager = (WifiManager) c.getApplicationContext().
+                                            getSystemService(Context.WIFI_SERVICE);
+
+        if(mWifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLED) {
+
+            // register WiFi scan results receiver
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
+            filter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+
+            c.registerReceiver(new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+
+                    List<ScanResult> results = mWifiManager.getScanResults();
+                    final int N = results.size();
+
+                    for (int i = 0; i < N; ++i) {
+                        /*
+                        Log.v(TAG, "  BSSID       =" + results.get(i).BSSID);
+                        Log.v(TAG, "  SSID        =" + results.get(i).SSID);
+                        Log.v(TAG, "  Capabilities=" + results.get(i).capabilities);
+                        Log.v(TAG, "  Frequency   =" + results.get(i).frequency);
+                        Log.v(TAG, "  Level       =" + results.get(i).level);
+                        Log.v(TAG, "---------------");
+                        */
+                    }
+                }
+            }, filter);
+
+            // start WiFi Scan
+            mWifiManager.startScan();
+        }
+    }
 }
