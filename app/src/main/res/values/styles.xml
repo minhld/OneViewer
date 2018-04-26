@@ -16,6 +16,7 @@
 
     <style name="AppThemeCustomBar" parent="Theme.AppCompat.Light">
         <item name="actionBarSize">50dp</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
     </style>
 
 </resources>

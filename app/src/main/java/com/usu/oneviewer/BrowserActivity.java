@@ -1,8 +1,12 @@
 package com.usu.oneviewer;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -27,6 +31,8 @@ public class BrowserActivity extends OneActivity {
 
     @BindView(R.id.goBtn)
     Button goBtn;
+
+    Menu optionMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,7 @@ public class BrowserActivity extends OneActivity {
         // set the default value for the text box
         String defUrl = "http://www.vogella.com/contact.html";
         urlText.setText(defUrl);
+
     }
 
     @Override
@@ -70,6 +77,34 @@ public class BrowserActivity extends OneActivity {
     protected void onResume() {
         super.onResume();
         XWebServerHelper.startServer(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        this.optionMenu = menu;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.browser_toolbar, menu);
+        showNetworkStatus(true);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.backItem: {
+                // go to previous page
+                break;
+            }
+            case R.id.refreshItem: {
+                // refresh current page
+                break;
+            }
+            case R.id.statusItem: {
+                // network status connected/disconnected
+                break;
+            }
+        }
+        return false;
     }
 
     private void setupWebView() {
@@ -102,6 +137,14 @@ public class BrowserActivity extends OneActivity {
         viewer.getSettings().setJavaScriptEnabled(true);
     }
 
+    private void showNetworkStatus(boolean isActive) {
+        optionMenu.getItem(2).setIcon(
+                isActive ? R.drawable.ic_wifi : R.drawable.ic_wifi_off);
+    }
+
+    /**
+     *
+     */
     private void loadUrlToViewer() {
         String url = urlText.getText().toString();
         String localUrl = XWebServerHelper.openUrl(url);
