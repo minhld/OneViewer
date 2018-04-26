@@ -65,7 +65,7 @@ public class XWebServer extends NanoHTTPD {
         String uri = session.getUri();
 
         if (uri.contains("favicon")){
-            uri = "";
+            return null;
         }
 
         if (uri.startsWith("/")) uri = uri.substring(1);
@@ -80,6 +80,7 @@ public class XWebServer extends NanoHTTPD {
         String eTag;
 
         try{
+            // InputStream is = NetworkHelper.receive(uri);
             InputStream is = NetworkHelper.getUrl(uri);
             Response res = new Response(Response.Status.OK, mime, is, is.available());
             if (res != null){
