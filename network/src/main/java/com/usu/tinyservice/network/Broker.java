@@ -16,10 +16,9 @@ public class Broker extends Thread {
 
     private String brokerId;
     private HashMap<String, String> funcMap;
-    // private static HashMap<String, JobMergeInfo> jobMergeList;
 
-    // private static ZMQ.Socket backend;
-    // private AckServerListener ackServer;
+    private static ZMQ.Socket backend, frontend;
+    private ZMQ.Context context;
 
     // long startTime = 0;
     // static long startRLRequestTime = 0;
@@ -50,17 +49,20 @@ public class Broker extends Thread {
      * which is for job distribution
      */
     void initRouterMode() {
-        ZMQ.Context context = ZMQ.context(1);
+        // ZMQ.Context context = ZMQ.context(1);
+        context = ZMQ.context(1);
 
         // initiate publish socket
         String frontendPort = "tcp://" + this.brokerIp + ":" + this.clientPort;
-        ZMQ.Socket frontend = context.socket(ZMQ.ROUTER);
+        // ZMQ.Socket frontend = context.socket(ZMQ.ROUTER);
+        frontend = context.socket(ZMQ.ROUTER);
         frontend.bind(frontendPort);
 
         // initiate subscribe socket
         String backendPort = "tcp://" + this.brokerIp + ":" + this.workerPort;
-        ZMQ.Socket backend = context.socket(ZMQ.ROUTER);
-        // backend = context.socket(ZMQ.ROUTER);
+        // ZMQ.Socket backend = context.socket(ZMQ.ROUTER);
+        backend = context.socket(ZMQ.ROUTER);
+
         NetUtils.setId(backend);
         backend.bind(backendPort);
 
@@ -291,6 +293,13 @@ public class Broker extends Thread {
     	    "]" + 
     	  "}";
     	return functionList;
+    }
+
+    public void close() {
+        frontend.close();
+        backend.close();
+        context.term();
+        this.interrupt();
     }
 
 //    /**

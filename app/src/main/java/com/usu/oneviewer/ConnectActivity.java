@@ -1,6 +1,7 @@
 package com.usu.oneviewer;
 
 import android.content.pm.PackageManager;
+import android.net.Network;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.os.Handler;
@@ -58,6 +59,10 @@ public class ConnectActivity extends OneActivity {
                     NetworkUtils.initBroker(NetworkUtils.wfdBrokerIp);
                     NetworkUtils.initWorker(NetworkUtils.wfdBrokerIp);
                     Utils.printLog(ConnectActivity.this, mInfoText, "Server: " + NetworkUtils.wfdBrokerIp + "\r\n");
+                    break;
+                }
+                case DevUtils.MESSAGE_DISCONNECTED: {
+                    NetworkUtils.disconnectAll();
                     break;
                 }
                 case DevUtils.MESSAGE_CLIENT_CONNECTED: {

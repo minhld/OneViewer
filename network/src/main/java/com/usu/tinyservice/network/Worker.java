@@ -12,11 +12,9 @@ import com.usu.tinyservice.network.NetUtils.WorkMode;
  * Created by minhld on 8/18/2016.
  */
 public abstract class Worker extends Thread {
-	
-
 	private ZMQ.Socket worker;
-    // private ExAckClient ackClient;
-	
+	private ZMQ.Context context;
+
 	// network and type information
     private String groupIp = "*";
     private int port = NetUtils.WORKER_PORT;
@@ -64,7 +62,7 @@ public abstract class Worker extends Thread {
      */
     private void initWithBroker() {
         try {
-            ZMQ.Context context = ZMQ.context(1);
+            context = ZMQ.context(1);
 
             // socket to talk to clients and set its Id
             worker = context.socket(ZMQ.REQ);
@@ -204,6 +202,11 @@ public abstract class Worker extends Thread {
 //        }
 //    }
 
+    public void close() {
+        worker.close();
+        context.term();
+        this.interrupt();
+    }
 
     /**
      * this abstract function needs to be filled. this is to

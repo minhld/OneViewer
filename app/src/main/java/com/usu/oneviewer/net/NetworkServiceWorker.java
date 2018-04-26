@@ -7,6 +7,7 @@ import com.usu.tinyservice.network.Worker;
 
 public class NetworkServiceWorker {
     NetworkService networkService;
+    WorkerX worker;
 
     public NetworkServiceWorker() {
         this(NetUtils.DEFAULT_IP);
@@ -14,7 +15,11 @@ public class NetworkServiceWorker {
 
     public NetworkServiceWorker(String brokerIp) {
         networkService = new NetworkService();
-        new WorkerX(brokerIp);
+        worker = new WorkerX(brokerIp);
+    }
+
+    public void close() {
+        worker.close();
     }
 
     class WorkerX extends Worker {
@@ -25,7 +30,6 @@ public class NetworkServiceWorker {
         public WorkerX(String brokerIp) {
             super(brokerIp);
         }
-
 
         @Override
         public byte[] resolveRequest(byte[] packageBytes) {

@@ -39,13 +39,10 @@ public class WFDSupporter {
 
             @Override
             public void wfdEstablished(WifiP2pInfo p2pInfo) {
-                if (p2pInfo.groupOwnerAddress == null) {
-                    return;
-                }
-
-                // String brokerIp = p2pInfo.groupOwnerAddress.getHostAddress();
-
-                if (p2pInfo.groupFormed && p2pInfo.isGroupOwner) {
+                if (!p2pInfo.groupFormed) {
+                    // when disconnection happens
+                    NetUtils.raiseEvent(DevUtils.MESSAGE_DISCONNECTED, null);
+                } else if (p2pInfo.groupFormed && p2pInfo.isGroupOwner) {
                     // When the device becomes an GO
                     // - a Broker should be placed on the GO
                     // - this Broker will be set on WiFi-Direct interface. it will hold

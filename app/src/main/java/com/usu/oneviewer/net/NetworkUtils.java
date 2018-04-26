@@ -28,8 +28,8 @@ public class NetworkUtils {
         workers.add(worker);
     }
 
-    public static void initClient(String brokerIp) {
-        client = new NetworkServiceClient(brokerIp, new ReceiveListener() {
+    public static NetworkServiceClient initClient(String brokerIp) {
+        client = new NetworkServiceClient(wfdBrokerIp, new ReceiveListener() {
             @Override
             public void dataReceived(String idChain, String funcName, byte[] data) {
                 ResponseMessage resp = (ResponseMessage) NetUtils.deserialize(data);
@@ -44,6 +44,24 @@ public class NetworkUtils {
                 }
             }
         });
+        return client;
+    }
+
+    /**
+     * destroy all brokers, clients and workers available on this device
+     */
+    public static void disconnectAll() {
+        if (client != null) {
+            client.close();
+            client = null;
+        }
+        if (broker != null) {
+            broker.close();
+            broker = null;
+        }
+        for (NetworkServiceWorker worker : workers) {
+            worker.close();
+        }
     }
 
     public static void setClientHandler(ClientHandler handler) {

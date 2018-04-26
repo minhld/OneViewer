@@ -52,7 +52,7 @@ public abstract class Client extends Thread {
     public void run() {
         // create context and connect client to the broker/worker
         // with a pre-defined Id
-        ZMQ.Context context = ZMQ.context(1);
+        context = ZMQ.context(1);
         requester = context.socket(ZMQ.REQ);
         NetUtils.setId(requester);
         // this.clientId = new String(this.requester.getIdentity());
@@ -67,6 +67,7 @@ public abstract class Client extends Thread {
 	public void close() {
         requester.close();
         context.term();
+        this.interrupt();
 	}
 	
 	/**

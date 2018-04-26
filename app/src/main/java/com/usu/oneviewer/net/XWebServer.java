@@ -84,7 +84,8 @@ public class XWebServer extends NanoHTTPD {
 
         // reset the response
         resp = null;
-        NetworkUtils.client.getUrl(uri);
+        // NetworkUtils.client.getUrl(uri);
+        NetworkUtils.initClient("").getUrl(uri);
 
         // wait
         while (resp == null) {

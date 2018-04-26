@@ -40,6 +40,10 @@ public class NetworkServiceClient {
         client.send(functionName, reqBytes);
     }
 
+    public void close() {
+        client.close();
+    }
+
     class RmiClient extends Client {
         public RmiClient() {
             super();

@@ -26,6 +26,7 @@ public class DevUtils {
     public static final int MESSAGE_CLIENT_CONNECTED = 0x500 + 2;
     public static final int MESSAGE_WIFI_DETECTED = 0x500 + 3;
     public static final int MESSAGE_INFO = 0x500 + 6;
+    public static final int MESSAGE_DISCONNECTED = 0x500 + 7;
     public static final int MESSAGE_WFDLIST_UPDATED = 0x500 + 8;
     public static final int MESSAGE_WIFILIST_UPDATED = 0x500 + 9;
 
