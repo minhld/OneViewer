@@ -13,23 +13,50 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefresh"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="50dp"
+            android:orientation="vertical">
 
-            <WebView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="35dp"
+                android:orientation="horizontal">
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+                <TextView
+                    android:id="@+id/urlText"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:hint="URL"
+                    android:layout_toLeftOf="@+id/goBtn"
+                    android:background="@drawable/border"
+                    android:padding="8dp"/>
 
-        <ProgressBar
-            android:id="@+id/loadingBar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerInParent="true"
-            android:visibility="invisible"/>
+                <Button
+                    android:id="@+id/goBtn"
+                    android:layout_width="60dp"
+                    android:layout_height="45dp"
+                    android:text="Go"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/border"/>
+
+            </RelativeLayout>
+
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <WebView
+                    android:id="@+id/viewer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+        </LinearLayout>
 
     </RelativeLayout>
 

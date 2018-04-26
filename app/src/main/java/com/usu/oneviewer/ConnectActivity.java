@@ -19,6 +19,7 @@ import com.usu.connection.utils.DevUtils;
 import com.usu.connection.wfd.WFDSupporter;
 import com.usu.connection.wifi.WiFiManager;
 import com.usu.connection.wifi.WiFiSupporter;
+import com.usu.oneviewer.net.NetworkUtils;
 import com.usu.tinyservice.network.NetUtils;
 import com.usu.oneviewer.utils.Utils;
 
@@ -44,30 +45,33 @@ public class ConnectActivity extends OneActivity {
     WFDSupporter wfdSupporter;
     WiFiSupporter wifiSupporter;
 
-    String brokerIp;
-    String wifiBrokerIp;
-
     Handler mainUiHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case DevUtils.MESSAGE_GO_CONNECTED: {
+                    // device becomes a server in wifi-direct model
                     WifiP2pInfo p2pInfo = (WifiP2pInfo) msg.obj;
-                    brokerIp = p2pInfo.groupOwnerAddress.getHostAddress();
-                    Utils.printLog(ConnectActivity.this, mInfoText, "Server: " + brokerIp + "\r\n");
+                    NetworkUtils.wfdBrokerIp = p2pInfo.groupOwnerAddress.getHostAddress();
+
+                    // initialize broker here
+                    NetworkUtils.initBroker(NetworkUtils.wfdBrokerIp);
+                    Utils.printLog(ConnectActivity.this, mInfoText, "Server: " + NetworkUtils.wfdBrokerIp + "\r\n");
                     break;
                 }
                 case DevUtils.MESSAGE_CLIENT_CONNECTED: {
+                    // device becomes a client in wifi-direct model
                     WifiP2pInfo p2pInfo = (WifiP2pInfo) msg.obj;
-                    // initWorker(p2pInfo.groupOwnerAddress.getHostAddress());
-                    brokerIp = p2pInfo.groupOwnerAddress.getHostAddress();
-                    Utils.printLog(ConnectActivity.this, mInfoText, "Client: " + brokerIp + "\r\n");
+                    NetworkUtils.wfdBrokerIp = p2pInfo.groupOwnerAddress.getHostAddress();
+
+                    // initialize worker here
+                    NetworkUtils.initWorker(NetworkUtils.wfdBrokerIp);
+                    Utils.printLog(ConnectActivity.this, mInfoText, "Client: " + NetworkUtils.wfdBrokerIp + "\r\n");
                     break;
                 }
                 case DevUtils.MESSAGE_WIFI_DETECTED: {
                     WifiInfo wifiInfo = (WifiInfo) msg.obj;
-                    wifiBrokerIp = DevUtils.getIPString(wifiInfo.getIpAddress());
-                    // ipText.setText(wifiBrokerIp);
+                    NetworkUtils.wifiBrokerIp = DevUtils.getIPString(wifiInfo.getIpAddress());
                     break;
                 }
                 case DevUtils.MESSAGE_WFDLIST_UPDATED: {

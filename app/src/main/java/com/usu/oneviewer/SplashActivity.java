@@ -35,7 +35,8 @@ public class SplashActivity extends AppCompatActivity {
 
         @Override
         protected void onProgressUpdate(Object[] values) {
-            Intent intent = new Intent(SplashActivity.this, ConnectActivity.class);
+            // Intent intent = new Intent(SplashActivity.this, ConnectActivity.class);
+            Intent intent = new Intent(SplashActivity.this, BrowserActivity.class);
             startActivity(intent);
 
             // close this activity

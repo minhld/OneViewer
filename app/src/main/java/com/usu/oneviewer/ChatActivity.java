@@ -6,7 +6,6 @@ import android.widget.ProgressBar;
 
 public class ChatActivity extends OneActivity {
     private SwipeRefreshLayout mSwipeRefresh;
-    private ProgressBar mLoadingBar;
 
 
     @Override
@@ -19,7 +18,6 @@ public class ChatActivity extends OneActivity {
 
         // adding components
         mSwipeRefresh = findViewById(R.id.swipeRefresh);
-        mLoadingBar = findViewById(R.id.loadingBar);
 
     }
 
