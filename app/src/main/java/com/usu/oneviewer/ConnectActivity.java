@@ -56,6 +56,7 @@ public class ConnectActivity extends OneActivity {
 
                     // initialize broker here
                     NetworkUtils.initBroker(NetworkUtils.wfdBrokerIp);
+                    NetworkUtils.initWorker(NetworkUtils.wfdBrokerIp);
                     Utils.printLog(ConnectActivity.this, mInfoText, "Server: " + NetworkUtils.wfdBrokerIp + "\r\n");
                     break;
                 }
@@ -65,7 +66,8 @@ public class ConnectActivity extends OneActivity {
                     NetworkUtils.wfdBrokerIp = p2pInfo.groupOwnerAddress.getHostAddress();
 
                     // initialize worker here
-                    NetworkUtils.initWorker(NetworkUtils.wfdBrokerIp);
+                    NetworkUtils.initClient(NetworkUtils.wfdBrokerIp);
+                    // NetworkUtils.initWorker(NetworkUtils.wfdBrokerIp);
                     Utils.printLog(ConnectActivity.this, mInfoText, "Client: " + NetworkUtils.wfdBrokerIp + "\r\n");
                     break;
                 }

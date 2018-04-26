@@ -5,6 +5,9 @@ import android.content.Context;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 /**
  * Created by Minh Le on 3/13/2018.
  */
@@ -45,4 +48,16 @@ public class Utils {
         });
     }
 
+    /**
+     * convert a binary array to an input stream
+     *
+     * @param data
+     * @return
+     */
+    public static InputStream getStream(byte[] data) {
+        // avoid null exception
+        if (data == null) data = new byte[0];
+
+        return new ByteArrayInputStream(data);
+    }
 }

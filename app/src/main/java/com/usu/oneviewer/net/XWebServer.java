@@ -3,6 +3,8 @@ package com.usu.oneviewer.net;
 import android.content.Context;
 import android.util.Log;
 
+import com.usu.oneviewer.utils.Utils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -14,6 +16,9 @@ public class XWebServer extends NanoHTTPD {
     public static final int SERVER_DEF_PORT = 3883;
 
     final String TAG = "XWebServer";
+
+    String mime;
+    Response resp;
 
     static final String MIME_DEFAULT_BINARY = "application/octet-stream";
     static final Map<String,String> mimeTypes = new HashMap<String, String>() {{
@@ -47,7 +52,6 @@ public class XWebServer extends NanoHTTPD {
         put("class", "application/octet-stream");
     }};
 
-    XWebServer asslServer;
     Context context;
 
     public XWebServer(Context context) {
@@ -58,6 +62,7 @@ public class XWebServer extends NanoHTTPD {
     public XWebServer(Context context, String hostName, int port){
         super(hostName, port);
         this.context = context;
+        setClientHandler();
     }
 
     @Override
@@ -71,27 +76,40 @@ public class XWebServer extends NanoHTTPD {
         if (uri.startsWith("/")) uri = uri.substring(1);
 
         // Get MIME type from file name extension, if possible
-        String mime = MIME_DEFAULT_BINARY;
+        mime = MIME_DEFAULT_BINARY;
         int dot = uri.lastIndexOf('.');
         if (dot >= 0) {
             mime = mimeTypes.get(uri.substring(dot + 1).toLowerCase());
         }
 
-        String eTag;
+        // reset the response
+        resp = null;
+        NetworkUtils.client.getUrl(uri);
 
-        try{
-            // InputStream is = NetworkHelper.receive(uri);
-            InputStream is = NetworkHelper.getUrl(uri);
-            Response res = new Response(Response.Status.OK, mime, is, is.available());
-            if (res != null){
-                eTag = Integer.toHexString(new Random().nextInt());
-                res.addHeader("ETag", eTag);
-                res.addHeader("Connection", "Keep-alive");
-                return res;
-            }
-        }catch(IOException e){
-            Log.v(TAG, e.getMessage());
+        // wait
+        while (resp == null) {
+            Utils.sleep(100);
         }
-        return null;
+        return resp;
+    }
+
+    private void setClientHandler() {
+        NetworkUtils.setClientHandler(new NetworkUtils.ClientHandler() {
+            @Override
+            public void responseReceived(byte[] data) {
+                try {
+                    InputStream is = Utils.getStream(data);
+                    resp = new Response(Response.Status.OK, mime, is, is.available());
+                    if (resp != null) {
+                        String eTag = Integer.toHexString(new Random().nextInt());
+                        resp.addHeader("ETag", eTag);
+                        resp.addHeader("Connection", "Keep-alive");
+                    }
+                } catch (IOException e) {
+                    InputStream is = Utils.getStream(new byte[0]);
+                    resp = new Response(Response.Status.OK, mime, is, 0);
+                }
+            }
+        });
     }
 }

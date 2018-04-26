@@ -1,7 +1,10 @@
 package com.usu.oneviewer.net;
 
+import com.usu.tinyservice.messages.binary.ResponseMessage;
 import com.usu.tinyservice.network.Broker;
 import com.usu.tinyservice.network.Client;
+import com.usu.tinyservice.network.NetUtils;
+import com.usu.tinyservice.network.ReceiveListener;
 import com.usu.tinyservice.network.Worker;
 
 import java.util.ArrayList;
@@ -9,8 +12,9 @@ import java.util.List;
 
 public class NetworkUtils {
     public static Broker broker;
-    public static List<Worker> workers = new ArrayList<>();
-    public static Client client;
+    public static List<NetworkServiceWorker> workers = new ArrayList<>();
+    public static NetworkServiceClient client;
+    public static ClientHandler handler;
 
     public static String wfdBrokerIp = "";
     public static String wifiBrokerIp = "";
@@ -20,16 +24,33 @@ public class NetworkUtils {
     }
 
     public static void initWorker(String brokerIp) {
-        Worker worker = new Worker(brokerIp) {
-            @Override
-            public String info() {
-                return null;
-            }
-        };
+        NetworkServiceWorker worker = new NetworkServiceWorker(brokerIp);
         workers.add(worker);
     }
 
-    public static void initClient() {
+    public static void initClient(String brokerIp) {
+        client = new NetworkServiceClient(brokerIp, new ReceiveListener() {
+            @Override
+            public void dataReceived(String idChain, String funcName, byte[] data) {
+                ResponseMessage resp = (ResponseMessage) NetUtils.deserialize(data);
+                if (resp.functionName.equals(NetUtils.BROKER_INFO)) {
+                    // a denied message from the Broker
+                    String msg = (String) resp.outParam.values[0];
+                    // UITools.printLog(MainActivity.this, infoText, "[Client-" + client.client.clientId + "] Error " + msg);
+                } else if (resp.functionName.equals("getUrl")) {
+                    byte[] msg = (byte[]) resp.outParam.values[0];
+                    if (handler != null) handler.responseReceived(msg);
+                    // UITools.printLog(MainActivity.this, infoText, "[Client-" + client.client.clientId + "] Received: " + msgs[0]);
+                }
+            }
+        });
+    }
 
+    public static void setClientHandler(ClientHandler handler) {
+        NetworkUtils.handler = handler;
+    }
+
+    public interface ClientHandler {
+        void responseReceived(byte[] resp);
     }
 }

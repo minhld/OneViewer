@@ -17,19 +17,25 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class NetworkHelper {
+public class NetworkService {
     static OkHttpClient client;
 
-    public static InputStream getUrl(String url) throws IOException {
+    public byte[] getUrl(String url) {
         if (client == null) {
             client = new OkHttpClient.Builder().build();
         }
-        Request request = new Request.Builder().url(url).build();
 
-        Response response = client.newCall(request).execute();
-        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-        return response.body().byteStream();
+        try {
+            Request request = new Request.Builder().url(url).build();
+            Response response = client.newCall(request).execute();
+            if (!response.isSuccessful()) {
+                throw new IOException("unexpected code " + response);
+            }
+            // InputStream is = response.body().byteStream();
+            return response.body().bytes();
+        } catch (IOException e) {
+            return new byte[0]; // empty
+        }
     }
 
 //    public static InputStream getSecureUrl(String url) throws IOException {
