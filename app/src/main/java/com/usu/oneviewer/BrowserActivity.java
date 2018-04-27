@@ -18,6 +18,8 @@ import android.widget.TextView;
 
 import com.usu.oneviewer.net.XWebServerHelper;
 
+import java.util.Stack;
+
 import butterknife.BindView;
 
 public class BrowserActivity extends OneActivity {
@@ -34,6 +36,7 @@ public class BrowserActivity extends OneActivity {
     Button goBtn;
 
     Menu optionMenu;
+    Stack<String> historyStack = new Stack<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,7 @@ public class BrowserActivity extends OneActivity {
         goBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadUrlToViewer();
+                loadUrlToViewer("", true);
             }
         });
 
@@ -55,7 +58,7 @@ public class BrowserActivity extends OneActivity {
             @Override
             public void onRefresh() {
                 // reload the page
-                loadUrlToViewer();
+                loadUrlToViewer("", true);
             }
         });
 
@@ -94,6 +97,10 @@ public class BrowserActivity extends OneActivity {
         switch (item.getItemId()) {
             case R.id.backItem: {
                 // go to previous page
+                if (!historyStack.empty()) {
+                    String lastUrl = historyStack.pop();
+                    loadUrlToViewer(lastUrl, false);
+                }
                 break;
             }
             case R.id.refreshItem: {
@@ -114,8 +121,7 @@ public class BrowserActivity extends OneActivity {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 // make sure the url is converted to local url to load within
                 // the scope of the embedded WebView
-                String localUrl = XWebServerHelper.openUrl(url);
-                viewer.loadUrl(localUrl);
+                loadUrlToViewer(url, true);
                 return true; // super.shouldOverrideUrlLoading(view, localUrl);
             }
 
@@ -145,11 +151,22 @@ public class BrowserActivity extends OneActivity {
     }
 
     /**
-     *
+     * get URL from the address bar and load to the WebView.
+     * It will also save URL to History Stack
      */
-    private void loadUrlToViewer() {
-        String url = urlText.getText().toString();
-        String localUrl = XWebServerHelper.openUrl(url);
+    private void loadUrlToViewer(String newUrl, boolean isNew) {
+        // whether to save URL to History
+        String lastUrl = urlText.getText().toString();
+        if (isNew && historyStack.empty() ||
+            isNew && !historyStack.peek().equals(lastUrl))
+            historyStack.push(lastUrl);
+
+        // go to the new URL
+        if (newUrl.equals("")) {
+            newUrl = urlText.getText().toString();
+        }
+        urlText.setText(newUrl);
+        String localUrl = XWebServerHelper.openUrl(newUrl);
         viewer.loadUrl(localUrl);
     }
 }

@@ -32,6 +32,8 @@
                     android:layout_toLeftOf="@+id/goBtn"
                     android:textSize="@dimen/dialog_text_size"
                     android:textColor="@color/browser_url_text"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:background="@drawable/border"
                     android:padding="8dp"/>
 
