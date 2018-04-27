@@ -12,6 +12,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -27,7 +28,7 @@ public class BrowserActivity extends OneActivity {
     WebView viewer;
 
     @BindView(R.id.urlText)
-    TextView urlText;
+    EditText urlText;
 
     @BindView(R.id.goBtn)
     Button goBtn;
@@ -114,7 +115,8 @@ public class BrowserActivity extends OneActivity {
                 // make sure the url is converted to local url to load within
                 // the scope of the embedded WebView
                 String localUrl = XWebServerHelper.openUrl(url);
-                return super.shouldOverrideUrlLoading(view, localUrl);
+                viewer.loadUrl(localUrl);
+                return true; // super.shouldOverrideUrlLoading(view, localUrl);
             }
 
             @Override

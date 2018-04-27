@@ -24,12 +24,14 @@
                 android:layout_height="35dp"
                 android:orientation="horizontal">
 
-                <TextView
+                <EditText
                     android:id="@+id/urlText"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:hint="URL"
                     android:layout_toLeftOf="@+id/goBtn"
+                    android:textSize="@dimen/dialog_text_size"
+                    android:textColor="@color/browser_url_text"
                     android:background="@drawable/border"
                     android:padding="8dp"/>
 

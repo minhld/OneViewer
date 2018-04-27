@@ -8,6 +8,9 @@
     <color name="sideStartColor">#F5D00E</color>
     <color name="sideEndColor">#F39A3E</color>
 
+    <!-- browser activity -->
+    <color name="browser_url_text">#666</color>
+
     <!-- action button colors -->
     <color name="actionButtonColor">#666</color>
 

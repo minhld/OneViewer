@@ -68,12 +68,12 @@ public class XWebServer extends NanoHTTPD {
     @Override
     public Response serve(IHTTPSession session) {
         String uri = session.getUri();
+        if (uri.startsWith("/")) uri = uri.substring(1);
 
-        if (uri.contains("favicon")){
+        // deny some strange URIs
+        if (uri.contains("favicon") || !uri.startsWith("http")){
             return null;
         }
-
-        if (uri.startsWith("/")) uri = uri.substring(1);
 
         // Get MIME type from file name extension, if possible
         mime = MIME_DEFAULT_BINARY;
@@ -83,15 +83,18 @@ public class XWebServer extends NanoHTTPD {
         }
 
         // reset the response
-        resp = null;
-        NetworkUtils.client.getUrl(uri);
-        // NetworkUtils.initClient("").getUrl(uri);
+        synchronized (NetworkUtils.client) {
+            resp = null;
 
-        // wait
-        while (resp == null) {
-            Utils.sleep(100);
+            NetworkUtils.client.getUrl(uri);
+            // NetworkUtils.initClient("").getUrl(uri);
+
+            // wait
+            while (resp == null) {
+                Utils.sleep(100);
+            }
+            return resp;
         }
-        return resp;
     }
 
     private void setClientHandler() {
