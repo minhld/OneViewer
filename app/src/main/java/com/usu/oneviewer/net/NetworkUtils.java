@@ -34,13 +34,11 @@ public class NetworkUtils {
             public void dataReceived(String idChain, String funcName, byte[] data) {
                 ResponseMessage resp = (ResponseMessage) NetUtils.deserialize(data);
                 if (resp.functionName.equals(NetUtils.BROKER_INFO)) {
-                    // a denied message from the Broker
+                    // a denied message from the Broker - TODO
                     String msg = (String) resp.outParam.values[0];
-                    // UITools.printLog(MainActivity.this, infoText, "[Client-" + client.client.clientId + "] Error " + msg);
                 } else if (resp.functionName.equals("getUrl")) {
                     byte[] msg = (byte[]) resp.outParam.values[0];
                     if (handler != null) handler.responseReceived(msg);
-                    // UITools.printLog(MainActivity.this, infoText, "[Client-" + client.client.clientId + "] Received: " + msgs[0]);
                 }
             }
         });

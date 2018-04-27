@@ -21,47 +21,28 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="35dp"
+                android:layout_height="45dp"
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/urlText"
+                    android:id="@+id/messageText"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
-                    android:hint="URL"
+                    android:hint="Message"
                     android:layout_toLeftOf="@+id/goBtn"
-                    android:textSize="@dimen/dialog_text_size"
+                    android:textSize="@dimen/chat_message_size"
                     android:textColor="@color/browser_url_text"
-                    android:inputType="text"
-                    android:maxLines="1"
+                    android:inputType="textMultiLine"
                     android:background="@drawable/border"
                     android:padding="8dp"/>
-
-                <Button
-                    android:id="@+id/goBtn"
-                    android:layout_width="60dp"
-                    android:layout_height="45dp"
-                    android:text="Go"
-                    android:layout_alignParentEnd="true"
-                    android:background="@drawable/border"/>
-
             </RelativeLayout>
 
-
-            <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/swipeRefresh"
+            <WebView
+                android:id="@+id/viewer"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <WebView
-                    android:id="@+id/viewer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-            </android.support.v4.widget.SwipeRefreshLayout>
+                android:layout_height="match_parent" />
 
         </LinearLayout>
-
     </RelativeLayout>
 
     <!-- side menu -->

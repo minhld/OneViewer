@@ -1,7 +1,6 @@
 package com.usu.oneviewer;
 
 import android.content.pm.PackageManager;
-import android.net.Network;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.os.Handler;
