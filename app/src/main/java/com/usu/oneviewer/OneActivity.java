@@ -18,9 +18,13 @@ import android.widget.TextView;
 
 import com.usu.oneviewer.utils.Utils;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class OneActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    // @BindView(R.id.userNameText)
+    // TextView userNameText;
+
     DrawerLayout drawer;
     boolean exitFlag = false;
 
@@ -31,6 +35,9 @@ public class OneActivity extends AppCompatActivity implements NavigationView.OnN
         // customize the actionbar
         getSupportActionBar().setCustomView(R.layout.one_actionbar);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+        // update the left side menu
+        // userNameText.setText(Utils.currentUser.nickname);
     }
 
     @Override

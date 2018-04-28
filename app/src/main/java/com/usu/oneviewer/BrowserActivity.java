@@ -1,7 +1,7 @@
 package com.usu.oneviewer;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Menu;
@@ -13,8 +13,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.usu.oneviewer.net.XWebServerHelper;
 
@@ -68,7 +66,6 @@ public class BrowserActivity extends OneActivity {
         // set the default value for the text box
         String defUrl = "http://www.vogella.com/contact.html";
         urlText.setText(defUrl);
-        urlText.setFocusable(false);
     }
 
     @Override
@@ -143,6 +140,7 @@ public class BrowserActivity extends OneActivity {
         });
 
         viewer.getSettings().setJavaScriptEnabled(true);
+        viewer.setBackgroundColor(Color.TRANSPARENT);
     }
 
     private void showNetworkStatus(boolean isActive) {

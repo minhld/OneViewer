@@ -18,7 +18,7 @@
         <item
             android:id="@+id/chatItem"
             android:icon="@drawable/ic_account"
-            android:title="Chat" />
+            android:title="Let's Chat" />
 
     </group>
 

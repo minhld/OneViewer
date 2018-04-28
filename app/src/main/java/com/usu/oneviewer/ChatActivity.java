@@ -1,18 +1,14 @@
 package com.usu.oneviewer;
 
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 
 import com.usu.oneviewer.support.MessageListAdapter;
-import com.usu.oneviewer.support.User;
 import com.usu.oneviewer.support.UserMessage;
-import com.usu.oneviewer.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +46,7 @@ public class ChatActivity extends OneActivity {
             @Override
             public void onClick(View view) {
                 String msg = messageText.getText().toString();
-                messageList.add(UserMessage.createMessage(ChatActivity.this, msg));
+                messageList.add(UserMessage.createMessage(msg));
                 mMessageAdapter.notifyDataSetChanged();
             }
         });

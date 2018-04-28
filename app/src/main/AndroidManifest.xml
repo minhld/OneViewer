@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE" />-->
 
     <application
         android:allowBackup="true"
@@ -32,10 +32,12 @@
             android:theme="@style/AppThemeCustomBar" />
 
         <activity android:name="com.usu.oneviewer.BrowserActivity"
-            android:theme="@style/AppThemeCustomBar" />
+            android:theme="@style/AppThemeCustomBar"
+            android:windowSoftInputMode="stateHidden" />
 
         <activity android:name="com.usu.oneviewer.ChatActivity"
-            android:theme="@style/AppThemeCustomBar" />
+            android:theme="@style/AppThemeCustomBar"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

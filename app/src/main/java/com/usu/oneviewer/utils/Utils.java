@@ -21,7 +21,7 @@ public class Utils {
     public final static int DELAY_TIME = 1000;
     public final static int DELAY_BACK_PRESS = 3000;
 
-    public static User currentUser;
+    public static User currentUser = new User();
 
     public static void displayRoundImageFromUrl(Context c, String url, ImageView view) {
 

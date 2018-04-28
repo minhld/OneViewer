@@ -60,10 +60,6 @@ public class ConnectActivity extends OneActivity {
                     Utils.printLog(ConnectActivity.this, mInfoText, "Server: " + NetworkUtils.wfdBrokerIp + "\r\n");
                     break;
                 }
-                case DevUtils.MESSAGE_DISCONNECTED: {
-                    NetworkUtils.disconnectAll();
-                    break;
-                }
                 case DevUtils.MESSAGE_CLIENT_CONNECTED: {
                     // device becomes a client in wifi-direct model
                     WifiP2pInfo p2pInfo = (WifiP2pInfo) msg.obj;
@@ -73,6 +69,10 @@ public class ConnectActivity extends OneActivity {
                     NetworkUtils.initClient(NetworkUtils.wfdBrokerIp);
                     // NetworkUtils.initWorker(NetworkUtils.wfdBrokerIp);
                     Utils.printLog(ConnectActivity.this, mInfoText, "Client: " + NetworkUtils.wfdBrokerIp + "\r\n");
+                    break;
+                }
+                case DevUtils.MESSAGE_DISCONNECTED: {
+                    NetworkUtils.disconnectAll();
                     break;
                 }
                 case DevUtils.MESSAGE_WIFI_DETECTED: {

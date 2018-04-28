@@ -40,8 +40,14 @@ public class Broker extends Thread {
     }
     
     public void run() {
-        // this switch
-        initRouterMode();
+        try {
+            // this switch
+            initRouterMode();
+        } catch (Exception e) {
+            // problem may come when a broker is initiate
+            // while the other is still running
+            NetUtils.printX("[Error]: " + e.getMessage());
+        }
     }
 
     /**
