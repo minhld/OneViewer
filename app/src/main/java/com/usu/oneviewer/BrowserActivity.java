@@ -68,7 +68,7 @@ public class BrowserActivity extends OneActivity {
         // set the default value for the text box
         String defUrl = "http://www.vogella.com/contact.html";
         urlText.setText(defUrl);
-
+        urlText.setFocusable(false);
     }
 
     @Override

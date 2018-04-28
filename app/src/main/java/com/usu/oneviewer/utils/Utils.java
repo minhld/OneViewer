@@ -2,8 +2,13 @@ package com.usu.oneviewer.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.telephony.TelephonyManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
+import com.usu.oneviewer.support.User;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -15,6 +20,16 @@ import java.io.InputStream;
 public class Utils {
     public final static int DELAY_TIME = 1000;
     public final static int DELAY_BACK_PRESS = 3000;
+
+    public static User currentUser;
+
+    public static void displayRoundImageFromUrl(Context c, String url, ImageView view) {
+
+    }
+
+    public static String formatDateTime(long time) {
+        return "";
+    }
 
     public static void sleep(int delayTime) {
         try {
