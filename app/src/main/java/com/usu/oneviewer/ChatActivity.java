@@ -33,7 +33,7 @@ public class ChatActivity extends OneActivity {
         // start up with layout and title
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        setTitle("Let's Chat!");
+        setTitle(getString(R.string.menu_chat_title));
         generateActions();
 
         createControls();

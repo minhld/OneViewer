@@ -103,7 +103,7 @@ public class ConnectActivity extends OneActivity {
         // start up with layout and title
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connect);
-        setTitle("Connections");
+        setTitle(getString(R.string.menu_connect_title));
         generateActions();
 
         // get controls ready for use

@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">One Viewer</string>
+
+    <!-- left side menu -->
+    <string name="menu_connect_title">Connections</string>
+    <string name="menu_browser_title">Browser</string>
+    <string name="menu_chat_title">Let\'s Chat!</string>
+    <string name="menu_manage_title">Management</string>
+    <string name="menu_about_title">About</string>
 </resources>

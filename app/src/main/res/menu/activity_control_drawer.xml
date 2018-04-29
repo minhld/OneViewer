@@ -8,17 +8,17 @@
         <item
             android:id="@+id/connectItem"
             android:icon="@drawable/ic_settings"
-            android:title="Connections" />
+            android:title="@string/menu_connect_title" />
 
         <item
             android:id="@+id/browserItem"
             android:icon="@drawable/ic_apple_icloud"
-            android:title="Browser" />
+            android:title="@string/menu_browser_title" />
 
         <item
             android:id="@+id/chatItem"
             android:icon="@drawable/ic_account"
-            android:title="Let's Chat" />
+            android:title="@string/menu_chat_title" />
 
     </group>
 
@@ -28,12 +28,12 @@
         <item
             android:id="@+id/manageItem"
             android:icon="@drawable/ic_briefcase"
-            android:title="Management" />
+            android:title="@string/menu_manage_title" />
 
         <item
             android:id="@+id/aboutItem"
             android:icon="@drawable/ic_alert_circle"
-            android:title="About" />
+            android:title="@string/menu_about_title" />
 
     </group>
 </menu>

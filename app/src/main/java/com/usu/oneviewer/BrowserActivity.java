@@ -41,7 +41,7 @@ public class BrowserActivity extends OneActivity {
         // start up with layout and title
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
-        setTitle("Browser");
+        setTitle(getString(R.string.menu_browser_title));
         generateActions();
 
         // adding components
