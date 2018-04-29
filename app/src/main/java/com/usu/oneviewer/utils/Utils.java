@@ -12,6 +12,7 @@ import com.usu.oneviewer.support.User;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by Minh Le on 3/13/2018.
@@ -20,6 +21,7 @@ import java.io.InputStream;
 public class Utils {
     public final static int DELAY_TIME = 1000;
     public final static int DELAY_BACK_PRESS = 3000;
+    static final SimpleDateFormat SDF = new SimpleDateFormat("HH:mm:ss");
 
     public static User currentUser = new User();
 
@@ -28,7 +30,7 @@ public class Utils {
     }
 
     public static String formatDateTime(long time) {
-        return "";
+        return SDF.format(time);
     }
 
     public static void sleep(int delayTime) {

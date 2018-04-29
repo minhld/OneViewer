@@ -45,17 +45,24 @@ public class ChatActivity extends OneActivity {
         messageSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String msg = messageText.getText().toString();
-                messageList.add(UserMessage.createMessage(msg));
-                mMessageAdapter.notifyDataSetChanged();
+                addNewMessage();
             }
         });
 
         // initiate the message recycler
-        messageList = new ArrayList<>();
         mMessageRecycler = findViewById(R.id.reyclerview_message_list);
+        messageList = new ArrayList<>();
         mMessageAdapter = new MessageListAdapter(this, messageList);
+        mMessageRecycler.setAdapter(mMessageAdapter);
         mMessageRecycler.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    private void addNewMessage() {
+        String msg = messageText.getText().toString();
+        messageList.add(UserMessage.createMessage(msg));
+        mMessageAdapter.notifyDataSetChanged();
+
+        // reset the message text
+        messageText.setText("");
+    }
 }
