@@ -9,10 +9,13 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.usu.oneviewer.support.User;
+import com.usu.oneviewer.support.UserMessage;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Minh Le on 3/13/2018.
@@ -22,11 +25,27 @@ public class Utils {
     public final static int DELAY_TIME = 1000;
     public final static int DELAY_BACK_PRESS = 3000;
     static final SimpleDateFormat SDF = new SimpleDateFormat("HH:mm:ss");
+    public final static int MESSAGES_MAX_SIZE = 100;
 
+    // store the current user
     public static User currentUser = new User();
 
-    public static void displayRoundImageFromUrl(Context c, String url, ImageView view) {
+    // store the current message list from the Chat window.
+    // this will be used to reload the message view when user
+    // leave and come back to the Chat window
+    public static List<UserMessage> messageList = new ArrayList<>();
 
+    /**
+     * add function: removes the oldest item if its size exceeds
+     * the maximum number (default is 100 - @MESSAGES_MAX_SIZE).
+     *
+     * @param msg
+     */
+    public static void addMessage(UserMessage msg) {
+        if (messageList.size() >= MESSAGES_MAX_SIZE) {
+            messageList.remove(0);
+        }
+        messageList.add(msg);
     }
 
     public static String formatDateTime(long time) {

@@ -9,6 +9,7 @@ import android.widget.EditText;
 
 import com.usu.oneviewer.support.MessageListAdapter;
 import com.usu.oneviewer.support.UserMessage;
+import com.usu.oneviewer.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +27,6 @@ public class ChatActivity extends OneActivity {
     Button messageSend;
 
     MessageListAdapter mMessageAdapter;
-    List<UserMessage> messageList;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +50,17 @@ public class ChatActivity extends OneActivity {
 
         // initiate the message recycler
         mMessageRecycler = findViewById(R.id.reyclerview_message_list);
-        messageList = new ArrayList<>();
-        mMessageAdapter = new MessageListAdapter(this, messageList);
+        mMessageAdapter = new MessageListAdapter(this, Utils.messageList);
         mMessageRecycler.setAdapter(mMessageAdapter);
         mMessageRecycler.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void addNewMessage() {
+        // wont accept if the message is empty
         String msg = messageText.getText().toString();
-        messageList.add(UserMessage.createMessage(msg));
+        if (msg.trim().equals("")) return;
+
+        Utils.addMessage(UserMessage.createMessage(msg));
         mMessageAdapter.notifyDataSetChanged();
 
         // reset the message text
