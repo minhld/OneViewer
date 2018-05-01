@@ -1,5 +1,6 @@
 package com.usu.oneviewer.net;
 
+import com.usu.oneviewer.support.UserMessage;
 import com.usu.tinyservice.messages.binary.RequestMessage;
 import com.usu.tinyservice.messages.binary.ResponseMessage;
 import com.usu.tinyservice.network.NetUtils;
@@ -39,6 +40,23 @@ public class NetworkServiceWorker {
             RequestMessage reqMsg = (RequestMessage) NetUtils.deserialize(packageBytes);
 
             switch (reqMsg.functionName) {
+                case "sendMessage": {
+                    // for variable "msg"
+                    UserMessage[] msgs = new UserMessage[reqMsg.inParams[0].values.length];
+                    for (int i = 0; i < reqMsg.inParams[0].values.length; i++) {
+                        msgs[i] = (UserMessage) reqMsg.inParams[0].values[i];
+                    }
+                    UserMessage msg = msgs[0];
+
+                    // start calling function "sendMessage"
+                    UserMessage[] rets = networkService.sendMessage(msg);
+                    String retType = "com.usu.oneviewer.support.UserMessage[]";
+                    ResponseMessage respMsg = new ResponseMessage(reqMsg.messageId, reqMsg.functionName, retType, rets );
+
+                    // convert to binary array
+                    respBytes = NetUtils.serialize(respMsg);
+                    break;
+                }
                 case "getUrl": {
                     // for variable "url"
                     java.lang.String[] urls = new java.lang.String[reqMsg.inParams[0].values.length];
@@ -69,6 +87,11 @@ public class NetworkServiceWorker {
                     "\"code\" : \"REGISTER\"," +
                     "\"id\" : \"" + workerId + "\"," +
                     "\"functions\" : [" +
+                    "{" +
+                    "\"functionName\" : \"sendMessage\"," +
+                    "\"inParams\" : [\"com.usu.oneviewer.support.UserMessage\"]," +
+                    "\"outParam\" : \"com.usu.oneviewer.support.UserMessage[]\"" +
+                    "}," +
                     "{" +
                     "\"functionName\" : \"getUrl\"," +
                     "\"inParams\" : [\"java.lang.String\"]," +

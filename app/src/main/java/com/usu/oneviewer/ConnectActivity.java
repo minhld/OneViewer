@@ -57,6 +57,7 @@ public class ConnectActivity extends OneActivity {
                     // initialize broker here
                     NetworkUtils.initBroker(NetworkUtils.wfdBrokerIp);
                     NetworkUtils.initWorker(NetworkUtils.wfdBrokerIp);
+                    NetworkUtils.initClient(NetworkUtils.wfdBrokerIp);
                     Utils.printLog(ConnectActivity.this, mInfoText, "Server: " + NetworkUtils.wfdBrokerIp + "\r\n");
                     break;
                 }

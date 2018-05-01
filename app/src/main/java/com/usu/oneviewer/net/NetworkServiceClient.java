@@ -1,5 +1,6 @@
 package com.usu.oneviewer.net;
 
+import com.usu.oneviewer.support.UserMessage;
 import com.usu.tinyservice.messages.binary.InParam;
 import com.usu.tinyservice.messages.binary.RequestMessage;
 import com.usu.tinyservice.network.Client;
@@ -23,6 +24,21 @@ public class NetworkServiceClient {
 
         // create request message and send
         client = new RmiClient(brokerIp);
+    }
+
+    public void sendMessage(UserMessage msg) {
+        // compose input parameters
+        String functionName = "sendMessage";
+        String outType = "com.usu.oneviewer.support.UserMessage[]";
+        RequestMessage reqMsg = new RequestMessage(functionName, outType);
+
+        // create request message and send
+        reqMsg.inParams = new InParam[1];
+        reqMsg.inParams[0] = new InParam("msg", "com.usu.oneviewer.support.UserMessage", msg);
+
+        // create a binary message
+        byte[] reqBytes = NetUtils.serialize(reqMsg);
+        client.send(functionName, reqBytes);
     }
 
     public void getUrl(java.lang.String url) {

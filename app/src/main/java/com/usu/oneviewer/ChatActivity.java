@@ -7,12 +7,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.usu.oneviewer.net.NanoHTTPD;
+import com.usu.oneviewer.net.NetworkUtils;
 import com.usu.oneviewer.support.MessageListAdapter;
 import com.usu.oneviewer.support.UserMessage;
 import com.usu.oneviewer.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Random;
 
 import butterknife.BindView;
 
@@ -36,7 +39,11 @@ public class ChatActivity extends OneActivity {
         setTitle(getString(R.string.menu_chat_title));
         generateActions();
 
+        // where controls are placed to the UI
         createControls();
+
+        // setup the client handler
+        setClientHandler();
     }
 
     private void createControls() {
@@ -60,10 +67,39 @@ public class ChatActivity extends OneActivity {
         String msg = messageText.getText().toString();
         if (msg.trim().equals("")) return;
 
-        Utils.addMessage(UserMessage.createMessage(msg));
-        mMessageAdapter.notifyDataSetChanged();
+        UserMessage newMsg = UserMessage.createMessage(msg);
+        // Utils.addMessage(newMsg);
+
+        NetworkUtils.client.sendMessage(newMsg);
+        // mMessageAdapter.notifyDataSetChanged();
 
         // reset the message text
         messageText.setText("");
     }
+
+    private void setClientHandler() {
+        NetworkUtils.setClientHandler(new NetworkUtils.ClientHandler() {
+            @Override
+            public void responseReceived(String info) {
+                // info
+            }
+
+            @Override
+            public void responseReceived(UserMessage[] msgList) {
+                for (UserMessage msg : msgList) {
+                    Utils.addMessage(msg);
+                }
+
+                ChatActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        mMessageAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+
+            @Override
+            public void responseReceived(byte[] data) {}
+        });
+    }
+
 }

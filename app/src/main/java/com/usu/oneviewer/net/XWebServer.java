@@ -3,6 +3,7 @@ package com.usu.oneviewer.net;
 import android.content.Context;
 import android.util.Log;
 
+import com.usu.oneviewer.support.UserMessage;
 import com.usu.oneviewer.utils.Utils;
 
 import java.io.IOException;
@@ -99,6 +100,12 @@ public class XWebServer extends NanoHTTPD {
 
     private void setClientHandler() {
         NetworkUtils.setClientHandler(new NetworkUtils.ClientHandler() {
+            @Override
+            public void responseReceived(String info) {}
+
+            @Override
+            public void responseReceived(UserMessage[] msgList) { }
+
             @Override
             public void responseReceived(byte[] data) {
                 try {

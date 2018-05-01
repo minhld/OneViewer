@@ -2,9 +2,10 @@ package com.usu.oneviewer.support;
 
 import android.os.Build;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class User {
+public class User implements Serializable {
     public String userId;
     public String nickname;
     // public String profileUrl = "";

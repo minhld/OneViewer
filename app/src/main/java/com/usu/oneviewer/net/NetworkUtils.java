@@ -1,5 +1,6 @@
 package com.usu.oneviewer.net;
 
+import com.usu.oneviewer.support.UserMessage;
 import com.usu.tinyservice.messages.binary.ResponseMessage;
 import com.usu.tinyservice.network.Broker;
 import com.usu.tinyservice.network.Client;
@@ -36,6 +37,10 @@ public class NetworkUtils {
                 if (resp.functionName.equals(NetUtils.BROKER_INFO)) {
                     // a denied message from the Broker - TODO
                     String msg = (String) resp.outParam.values[0];
+                    if (handler != null) handler.responseReceived(msg);
+                } else if (resp.functionName.equals("sendMessage")) {
+                    UserMessage[] msgList = (UserMessage[]) resp.outParam.values;
+                    if (handler != null) handler.responseReceived(msgList);
                 } else if (resp.functionName.equals("getUrl")) {
                     byte[] msg = (byte[]) resp.outParam.values[0];
                     if (handler != null) handler.responseReceived(msg);
@@ -67,6 +72,8 @@ public class NetworkUtils {
     }
 
     public interface ClientHandler {
+        void responseReceived(String info);
+        void responseReceived(UserMessage[] msgList);
         void responseReceived(byte[] resp);
     }
 }

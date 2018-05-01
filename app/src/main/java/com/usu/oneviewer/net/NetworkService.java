@@ -1,24 +1,47 @@
 package com.usu.oneviewer.net;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
+import com.usu.oneviewer.support.UserMessage;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 public class NetworkService {
-    static OkHttpClient client;
+    public static final int MESSAGE_MAX_SIZE = 100;
+
+    OkHttpClient client;
+    List<UserMessage> messageList;
+
+    public UserMessage[] sendMessage(UserMessage msg) {
+        if (messageList == null) {
+            messageList = new ArrayList<>();
+        }
+
+        // insert the new message to the list
+        if (!msg.message.equals("")) {
+            if (messageList.size() >= MESSAGE_MAX_SIZE) {
+                messageList.remove(0);
+            }
+            messageList.add(msg);
+        }
+
+        // get the newest message list
+        List<UserMessage> cMsgList = new ArrayList<>();
+        for (int i = messageList.size() - 1; i >= 0; i--) {
+            UserMessage cMsg = messageList.get(i);
+            if (cMsg.createdAt > msg.createdAt) {
+                cMsgList.add(cMsg);
+            } else {
+                break;
+            }
+        }
+
+        return cMsgList.toArray(new UserMessage[] {});
+    }
 
     public byte[] getUrl(String url) {
         if (client == null) {

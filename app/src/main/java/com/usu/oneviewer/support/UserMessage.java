@@ -2,9 +2,10 @@ package com.usu.oneviewer.support;
 
 import com.usu.oneviewer.utils.Utils;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class UserMessage {
+public class UserMessage implements Serializable {
     public String message;
     public User sender;
     public long createdAt;
