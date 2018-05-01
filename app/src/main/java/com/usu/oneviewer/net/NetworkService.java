@@ -16,7 +16,7 @@ public class NetworkService {
     OkHttpClient client;
     List<UserMessage> messageList;
 
-    public UserMessage[] sendMessage(UserMessage msg) {
+    public UserMessage[] sendMessage(UserMessage msg, long recvTime) {
         if (messageList == null) {
             messageList = new ArrayList<>();
         }
@@ -33,8 +33,8 @@ public class NetworkService {
         List<UserMessage> cMsgList = new ArrayList<>();
         for (int i = messageList.size() - 1; i >= 0; i--) {
             UserMessage cMsg = messageList.get(i);
-            if (cMsg.createdAt > msg.createdAt) {
-                cMsgList.add(cMsg);
+            if (cMsg.createdAt > recvTime) {
+                cMsgList.add(0, cMsg);
             } else {
                 break;
             }

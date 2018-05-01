@@ -26,15 +26,16 @@ public class NetworkServiceClient {
         client = new RmiClient(brokerIp);
     }
 
-    public void sendMessage(UserMessage msg) {
+    public void sendMessage(UserMessage msg, long recvTime) {
         // compose input parameters
         String functionName = "sendMessage";
         String outType = "com.usu.oneviewer.support.UserMessage[]";
         RequestMessage reqMsg = new RequestMessage(functionName, outType);
 
         // create request message and send
-        reqMsg.inParams = new InParam[1];
+        reqMsg.inParams = new InParam[2];
         reqMsg.inParams[0] = new InParam("msg", "com.usu.oneviewer.support.UserMessage", msg);
+        reqMsg.inParams[1] = new InParam("recvTime", "long", recvTime);
 
         // create a binary message
         byte[] reqBytes = NetUtils.serialize(reqMsg);

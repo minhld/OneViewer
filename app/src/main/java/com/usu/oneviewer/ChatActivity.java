@@ -7,15 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.usu.oneviewer.net.NanoHTTPD;
 import com.usu.oneviewer.net.NetworkUtils;
 import com.usu.oneviewer.support.MessageListAdapter;
 import com.usu.oneviewer.support.UserMessage;
 import com.usu.oneviewer.utils.Utils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Random;
+import java.util.Date;
 
 import butterknife.BindView;
 
@@ -30,6 +27,7 @@ public class ChatActivity extends OneActivity {
     Button messageSend;
 
     MessageListAdapter mMessageAdapter;
+    long receiveTime = new Date().getTime();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +68,7 @@ public class ChatActivity extends OneActivity {
         UserMessage newMsg = UserMessage.createMessage(msg);
         // Utils.addMessage(newMsg);
 
-        NetworkUtils.client.sendMessage(newMsg);
+        NetworkUtils.client.sendMessage(newMsg, receiveTime);
         // mMessageAdapter.notifyDataSetChanged();
 
         // reset the message text
@@ -88,6 +86,7 @@ public class ChatActivity extends OneActivity {
             public void responseReceived(UserMessage[] msgList) {
                 for (UserMessage msg : msgList) {
                     Utils.addMessage(msg);
+                    receiveTime = msg.createdAt;
                 }
 
                 ChatActivity.this.runOnUiThread(new Runnable() {

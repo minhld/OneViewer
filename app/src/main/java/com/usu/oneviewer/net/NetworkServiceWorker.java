@@ -48,8 +48,14 @@ public class NetworkServiceWorker {
                     }
                     UserMessage msg = msgs[0];
 
+                    long[] recvTimes = new long[reqMsg.inParams[1].values.length];
+                    for (int i = 0; i < reqMsg.inParams[1].values.length; i++) {
+                        recvTimes[i] = (long) reqMsg.inParams[1].values[i];
+                    }
+                    long recvTime = recvTimes[0];
+
                     // start calling function "sendMessage"
-                    UserMessage[] rets = networkService.sendMessage(msg);
+                    UserMessage[] rets = networkService.sendMessage(msg, recvTime);
                     String retType = "com.usu.oneviewer.support.UserMessage[]";
                     ResponseMessage respMsg = new ResponseMessage(reqMsg.messageId, reqMsg.functionName, retType, rets );
 
