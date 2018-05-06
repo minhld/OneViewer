@@ -75,6 +75,11 @@ public class ChatActivity extends OneActivity {
         messageText.setText("");
     }
 
+    /**
+     * set client handler to handle incoming messages.
+     * this will be set to listen to messages automatically
+     * in every single second
+     */
     private void setClientHandler() {
         NetworkUtils.setClientHandler(new NetworkUtils.ClientHandler() {
             @Override
