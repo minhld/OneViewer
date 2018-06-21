@@ -1,1 +1,1 @@
-include ':app',':network','annotations','processors'
+include ':app',':network', ':sideapp','annotations','processors'
